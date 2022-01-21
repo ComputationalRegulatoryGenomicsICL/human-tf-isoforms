@@ -15,6 +15,6 @@ process READ_NAMES {
 
     script:
     """
-    $moduleDir/bin/get_read_names.py $reads > ${meta.id}_read_names
+    get_read_names.py $reads > ${meta.id}_read_names
     """
 }
