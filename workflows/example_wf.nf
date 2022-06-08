@@ -4,13 +4,15 @@ include { READ_NAMES } from '../modules/local/read_names/main.nf'
 reads = [
     [
         [
-            id: "testx"
+            id: "testx",
+            single_end: true
         ],
         "https://github.com/hartwigmedical/testdata/raw/master/100k_reads_hiseq/TESTX/TESTX_H7YRLADXX_S1_L001_R1_001.fastq.gz"
     ],
     [
         [
-            id: "testy"
+            id: "testy",
+            single_end: true
         ],
         "https://github.com/hartwigmedical/testdata/raw/master/100k_reads_hiseq/TESTY/TESTY_H7YRLADXX_S1_L001_R1_001.fastq.gz"
     ]
