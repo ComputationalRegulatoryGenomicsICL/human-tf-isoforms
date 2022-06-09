@@ -11,10 +11,10 @@ process READ_NAMES {
     tuple val(meta), path(reads)
 
     output:
-    path "*_read_names", emit: read_names
+    tuple val(meta), path("*_read_names.txt"), emit: read_names
 
     script:
     """
-    get_read_names.py $reads > ${meta.id}_read_names
+    get_read_names.py $reads > ${meta.id}_read_names.txt
     """
 }

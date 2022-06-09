@@ -1,5 +1,6 @@
 include { FASTQC } from '../modules/nf-core/modules/fastqc/main.nf'
-include { READ_NAMES } from '../modules/local/read_names/main.nf'
+include { READ_NAMES } from '../modules/local/read_names.nf'
+include { FLOWCELL } from '../modules/local/flowcell.nf'
 
 reads = [
     [
@@ -27,4 +28,6 @@ workflow NF_EXAMPLE {
     FASTQC( ch_reads )
 
     READ_NAMES( ch_reads )
+
+    FLOWCELL( READ_NAMES.out.read_names )
 }
