@@ -1,6 +1,7 @@
 include { FASTQC } from '../modules/nf-core/modules/fastqc/main.nf'
 include { READ_NAMES } from '../modules/local/read_names.nf'
 include { FLOWCELL } from '../modules/local/flowcell.nf'
+include { BOWTIE2_ALIGN } from '../modules/nf-core/modules/bowtie2/align/main'
 
 reads = [
     [
@@ -25,9 +26,13 @@ Channel
     .set{ ch_reads }
 
 workflow NF_EXAMPLE {
+
     FASTQC( ch_reads )
 
     READ_NAMES( ch_reads )
 
     FLOWCELL( READ_NAMES.out.read_names )
+
+    BOWTIE2_ALIGN( ch_reads, index, false, true )
+
 }
