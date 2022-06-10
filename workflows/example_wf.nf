@@ -52,4 +52,35 @@ workflow NF_EXAMPLE {
 
     VERSIONSHTML( ch_versions.unique().collectFile() )
 
+    // Channel
+    //     .from( 1..200 )
+    //     .randomSample( 20 )
+    //     .view()
+
+    // Channel
+    //     .from( 1..10 )
+    //     .map{ it * 2 }
+    //     .view()
+
+    // Channel
+    //     .from( 1..10 )
+    //     .reduce{ a, b -> a + b }
+    //     .view()
+
+    // Channel
+    //     .from( 'aaa', 'aab', 'baa', 'aac', 'cac' )
+    //     .count( ~/^aa.*/ )
+    //     .view()
+
+    // Channel
+    //     .from( 'x_sample1.tsv', 'x_sample2.tsv', 'y_sample1.tsv' )
+    //     .branch{
+    //         x: it =~ /^x_.*/
+    //         y: it =~ /^y_.*/
+    //     }
+    //     .set{ ch_samples }
+    
+    // ch_samples.x.view{ "x: $it" }
+    // ch_samples.y.view{ "y: $it" }
+
 }
