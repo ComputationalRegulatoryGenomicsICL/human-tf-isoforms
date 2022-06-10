@@ -25,7 +25,14 @@ Channel
     .map{ row -> [ row[0], file(row[1], checkIfExists: true) ] }
     .set{ ch_reads }
 
+Channel
+    //.from( file( params.genomes['GRCh38'].bowtie2 ) )
+    .from( file( "/Users/sidoros/nextflow-example/Bowtie2Index" ) )
+    .set{ ch_index }
+
 workflow NF_EXAMPLE {
+
+    ch_index.view()
 
     FASTQC( ch_reads )
 
@@ -33,6 +40,6 @@ workflow NF_EXAMPLE {
 
     FLOWCELL( READ_NAMES.out.read_names )
 
-    BOWTIE2_ALIGN( ch_reads, index, false, true )
+    BOWTIE2_ALIGN( ch_reads, ch_index, false, true )
 
 }
