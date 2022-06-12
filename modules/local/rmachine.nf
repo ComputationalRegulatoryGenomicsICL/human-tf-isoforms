@@ -8,8 +8,6 @@ process RMACHINE {
     tuple val(meta), path(bowtie2_log)
 
     output:
-    //tuple val(meta), path("args_parse.txt"), emit: arg_parse
-    //path "bowtie2_table.tsv", emit: bowtie2_table
     tuple val(meta), path("tsv"), emit: tsv_dir
     tuple val(meta), path("pdf"), emit: pdf_dir
     path "versions.yml"         , emit: versions
