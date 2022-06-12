@@ -27,6 +27,10 @@ Channel
     .map{ row -> [ row[0], file(row[1], checkIfExists: true) ] }
     .set{ ch_reads }
 
+index_handler = file( "/Users/sidoros/nextflow-example/Bowtie2Index" )
+
+rmd_handler = file( "/Users/sidoros/nextflow-example/rmd/process_bowtie2_log.Rmd" )
+
 workflow NF_EXAMPLE {
 
     FASTQC( ch_reads )
@@ -36,13 +40,14 @@ workflow NF_EXAMPLE {
     FASTQHEAD( ch_reads, 1000 )
 
     BOWTIE2_ALIGN( FASTQHEAD.out.head_fastq.filter( ~/.*testx.*/ ),
-                   file( "/Users/sidoros/nextflow-example/Bowtie2Index" ),
-                   false, true )
+                   index_handler,
+                   false, 
+                   true )
 
     //RMACHINE( BOWTIE2_ALIGN.out.log )
 
     RMACHINE( BOWTIE2_ALIGN.out.log, 
-              file( "/Users/sidoros/nextflow-example/rmd/process_bowtie2_log.Rmd" ) )
+              rmd_handler )
 
     Channel
         .empty()
