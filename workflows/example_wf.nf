@@ -2,6 +2,7 @@ include { FASTQC } from '../modules/nf-core/modules/fastqc/main.nf'
 include { READ_NAMES } from '../modules/local/read_names.nf'
 include { FASTQHEAD } from '../modules/local/fastqhead.nf'
 include { BOWTIE2_ALIGN } from '../modules/nf-core/modules/bowtie2/align/main'
+include { RMACHINE } from '../modules/local/rmachine.nf'
 include { VERSIONSHTML } from '../modules/local/versionshtml.nf'
 
 reads = [
@@ -42,12 +43,15 @@ workflow NF_EXAMPLE {
     BOWTIE2_ALIGN( FASTQHEAD.out.head_fastq.filter( ~/.*testx.*/ ), 
                    ch_index, false, true )
 
+    RMACHINE( BOWTIE2_ALIGN.out.log )
+
     Channel
         .empty()
         .mix( FASTQC.out.versions )
         .mix( READ_NAMES.out.versions )
         .mix( FASTQHEAD.out.versions )
         .mix( BOWTIE2_ALIGN.out.versions )
+        .mix( RMACHINE.out.versions )
         .set{ ch_versions }
 
     VERSIONSHTML( ch_versions.unique().collectFile() )
