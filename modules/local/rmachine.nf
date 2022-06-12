@@ -47,8 +47,8 @@ process RMACHINE {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         R: \$(R --version | head -1 | awk '{print \$3}')
-        dplyr: \$(Rscript -e 'packageVersion("dplyr")' | awk '{print \$2}' | tr -d "‘’")
-        ggplot2: \$(Rscript -e 'packageVersion("ggplot2")' | awk '{print \$2}' | tr -d "‘’")
+        R_dplyr: \$(Rscript -e 'packageVersion("dplyr")' | awk '{print \$2}' | tr -d "‘’")
+        R_ggplot2: \$(Rscript -e 'packageVersion("ggplot2")' | awk '{print \$2}' | tr -d "‘’")
     END_VERSIONS
     """
 }
