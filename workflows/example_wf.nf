@@ -32,6 +32,10 @@ Channel
     .from( file( "/Users/sidoros/nextflow-example/Bowtie2Index" ) )
     .set{ ch_index }
 
+Channel
+    .from( file( "/Users/sidoros/nextflow-example/rmd/process_bowtie2_log.Rmd" ) )
+    .set{ ch_rmd }
+
 workflow NF_EXAMPLE {
 
     FASTQC( ch_reads )
@@ -43,7 +47,10 @@ workflow NF_EXAMPLE {
     BOWTIE2_ALIGN( FASTQHEAD.out.head_fastq.filter( ~/.*testx.*/ ), 
                    ch_index, false, true )
 
-    RMACHINE( BOWTIE2_ALIGN.out.log )
+    //RMACHINE( BOWTIE2_ALIGN.out.log )
+
+    RMACHINE( BOWTIE2_ALIGN.out.log, 
+              ch_rmd ) // ch_rmd
 
     Channel
         .empty()
