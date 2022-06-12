@@ -22,7 +22,8 @@ process FASTQHEAD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        fastqhead: 1.0
+        Bash: \$(echo "\$BASH_VERSION")
+        gunzip: \$(gunzip --version | head -1 | awk '{print \$3}')
     END_VERSIONS
     """
 }

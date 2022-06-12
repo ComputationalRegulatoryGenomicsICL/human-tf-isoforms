@@ -17,7 +17,7 @@ process READ_NAMES {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        read_names: 1.0
+        Python: \$(python --version | awk '{print \$2}') 
     END_VERSIONS
     """
 }
