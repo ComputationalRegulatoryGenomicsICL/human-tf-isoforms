@@ -27,15 +27,6 @@ Channel
     .map{ row -> [ row[0], file(row[1], checkIfExists: true) ] }
     .set{ ch_reads }
 
-Channel
-    //.from( file( params.genomes['GRCh38'].bowtie2 ) )
-    .from( file( "/Users/sidoros/nextflow-example/Bowtie2Index" ) )
-    .set{ ch_index }
-
-Channel
-    .from( file( "/Users/sidoros/nextflow-example/rmd/process_bowtie2_log.Rmd" ) )
-    .set{ ch_rmd }
-
 workflow NF_EXAMPLE {
 
     FASTQC( ch_reads )
@@ -44,13 +35,14 @@ workflow NF_EXAMPLE {
 
     FASTQHEAD( ch_reads, 1000 )
 
-    BOWTIE2_ALIGN( FASTQHEAD.out.head_fastq.filter( ~/.*testx.*/ ), 
-                   ch_index, false, true )
+    BOWTIE2_ALIGN( FASTQHEAD.out.head_fastq.filter( ~/.*testx.*/ ),
+                   file( "/Users/sidoros/nextflow-example/Bowtie2Index" ),
+                   false, true )
 
     //RMACHINE( BOWTIE2_ALIGN.out.log )
 
     RMACHINE( BOWTIE2_ALIGN.out.log, 
-              ch_rmd ) // ch_rmd
+              file( "/Users/sidoros/nextflow-example/rmd/process_bowtie2_log.Rmd" ) )
 
     Channel
         .empty()
