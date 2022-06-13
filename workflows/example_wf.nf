@@ -29,6 +29,9 @@ Channel
 
 index_handler = file( "/Users/sidoros/nextflow-example/Bowtie2Index" )
 
+// index_handler = file( params.genomes['GRCh38'].bowtie2 )
+// Would take the Bowtie2 index of GRCh38 from the iGenomes project hosted at Amazon S3: s3://ngi-igenomes/igenomes/Homo_sapiens/NCBI/GRCh38/Sequence/Bowtie2Index
+
 rmd_handler = file( "/Users/sidoros/nextflow-example/rmd/process_bowtie2_log.Rmd" )
 
 workflow NF_EXAMPLE {
