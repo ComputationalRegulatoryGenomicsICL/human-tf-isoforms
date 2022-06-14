@@ -20,3 +20,5 @@ nf-core modules create
 ```
 
 It will ask you for the module name and other parameters.
+
+After creating or installing a module, you need to add an `include` instruction for that module into your workflow and also add a corresponding structure to `modules.config` (see `workflows/example_wf.nf` and `modules.config` for examples).
