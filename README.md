@@ -12,3 +12,11 @@ To install additional modules, use the [nf-core tool](https://github.com/nf-core
 ```
 nf-core modules install star/align
 ```
+
+To create your own module, also use the [nf-core tool](https://github.com/nf-core/tools):
+
+```
+nf-core modules create
+```
+
+It will ask you for the module name and other parameters.
