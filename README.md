@@ -5,7 +5,5 @@ This Nextflow pipeline reproduces the analysis from my PhD thesis "A computation
 Run this pipeline from within the repository directory as follows:
 
 ```
-nextflow run main.nf -latest -profile <your_profile>
+nextflow run main.nf -profile singularity
 ```
-
-where `<your_profile>` is the Nextflow profile for your computational cluster or cloud service.
