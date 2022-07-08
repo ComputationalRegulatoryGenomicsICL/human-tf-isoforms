@@ -1,7 +1,7 @@
 include { DOMAIN_ANALYSIS } from '../modules/local/domain_analysis.nf'
 include { VERSIONSHTML } from '../modules/local/versionshtml.nf'
 
-rmd_domain_analysis = file( "/Users/sidoros/nextflow-example/rmd/domain_analysis.Rmd" )
+rmd_domain_analysis = file( "./rmd/domain_analysis.Rmd" )
 
 workflow NF_ANALYSIS_REPRODUCTION {
 
