@@ -1,9 +1,9 @@
 #!/usr/bin/env nextflow
 
-nextflow.enable.dsl = 2
+//nextflow.enable.dsl = 2
 
-include { NF_EXAMPLE } from './workflows/example_wf.nf'
+include { NF_ANALYSIS_REPRODUCTION } from './workflows/analysis_reproduction.nf'
 
 workflow {
-    NF_EXAMPLE()
+    NF_ANALYSIS_REPRODUCTION()
 }
