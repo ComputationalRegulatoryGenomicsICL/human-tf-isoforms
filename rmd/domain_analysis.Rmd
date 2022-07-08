@@ -20,6 +20,13 @@ library(dplyr)
 library(ggplot2)
 ```
 
+Print versions of the loaded libraries:
+
+```{r, include=T}
+packageVersion("dplyr")
+packageVersion("ggplot2")
+```
+
 Read args and create output paths:
 
 ```{r, include=T}
