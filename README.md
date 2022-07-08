@@ -1,24 +1,11 @@
-# nextflow-example
-A minimal Nextflow project compatible with nf-core
+# human-tf-isoforms
 
-Run this example pipeline with:
+This Nextflow pipeline reproduces the analysis from my PhD thesis "A computational study of nucleosomal binding and alternative isoforms of human transcription factors" [Link to the official publication in Spiral to be added in autum of 2022.]
 
-```
-nextflow run main.nf -profile docker
-```
-
-To install additional modules, use the [nf-core tools](https://github.com/nf-core/tools), for example:
+Run this pipeline from within the repository directory as follows:
 
 ```
-nf-core modules install star/align
+nextflow run main.nf -latest -profile <your_profile>
 ```
 
-To create your own module, also use the [nf-core tools](https://github.com/nf-core/tools):
-
-```
-nf-core modules create
-```
-
-It will ask you for the module name and other parameters.
-
-After creating or installing a module, you need to add an `include` instruction for that module into your workflow and also add a corresponding structure to `modules.config` (see `workflows/example_wf.nf` and `modules.config` for examples).
+where `<your_profile>` is the Nextflow profile for your computational cluster or cloud service.
