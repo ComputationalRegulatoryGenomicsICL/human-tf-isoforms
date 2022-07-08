@@ -3,16 +3,16 @@ title: title: "Alternative splicing of domains in human transcription factors"
 author: "Sviatoslav Sidorov"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
-    html_document:
-     collapsed: no
-     fig_align: center
-     fig_caption: yes
-     highlight: haddock
-     keep_md: yes
-     number_sections: yes
-     toc: yes
-     toc_depth: 3
-     toc_float: yes
+  html_document:
+    collapsed: no
+    fig_align: center
+    fig_caption: yes
+    highlight: haddock
+    keep_md: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
 ---
 
 ```{r, include=T}
