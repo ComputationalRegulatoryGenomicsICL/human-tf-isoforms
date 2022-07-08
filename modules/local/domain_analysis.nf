@@ -5,13 +5,14 @@ process DOMAIN_ANALYSIS {
     container 'sviatsidorov/r_machine:1.0'
 
     input:
-    //tuple val(meta), path(bowtie2_log)
     path rmd
+    // arguments for rmd
+    // tuple path(...), path(...), ...
 
     output:
-    tuple val(meta), path("tsv")   , emit: tsv_dir
-    tuple val(meta), path("pdf")   , emit: pdf_dir
-    tuple val(meta), path("*.html"), emit: knitted_html
+    path "tsv"   , emit: tsv_dir
+    path "pdf"   , emit: pdf_dir
+    path "*.html", emit: knitted_html
 
     script:
     """
