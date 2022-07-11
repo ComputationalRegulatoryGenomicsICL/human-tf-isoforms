@@ -11,9 +11,9 @@ process DOMAIN_ANALYSIS {
     // tuple path(...), path(...), ...
 
     output:
-    path "tsv"   , emit: tsv_dir
-    path "pdf"   , emit: pdf_dir
-    path "*.html", emit: knitted_html
+    path "tables"       , emit: tables_dir
+    path "figure_panels", emit: figure_panels_dir
+    path "*.html"       , emit: knitted_html
 
     script:
     """
