@@ -44,21 +44,31 @@ packageVersion("XLConnect")
 packageVersion("msa")
 ```
 
-## Prepare input/output
+## Read input and organise output
 
 Read args and create output paths:
 
 ```{r, include=T}
 args = commandArgs()
 
-#input.name = args[9]
+humantfs_name = args[9]
 
 #output.name = paste0(sub('\\.tsv', '', input.name), "_processed.tsv")
 
-tsv.dir = "tables"
-dir.create(file.path(".", tsv.dir))
+tables_dir = "tables"
+dir.create(file.path(".", tables_dir))
 
-pdf.dir = "figure_panels"
-dir.create(file.path(".", pdf.dir))
+figure_panels_dir = "figure_panels"
+dir.create(file.path(".", figure_panels_dir))
 ```
 
+## Retrieve and count all human TFs from the HumanTFs database
+
+First, retrieve all transcription factors from the [Human Transcription Factors](http://humantfs.ccbr.utoronto.ca/index.php) database ([Lambert et al., 2018](https://www.sciencedirect.com/science/article/pii/S0092867418301065?via%3Dihub)):
+
+```{r, include=T}
+print(humantfs_name)
+# humantfs_name
+# humantfs = as_tibble(read.csv(file = "data/humantfs1.01/DatabaseExtract_v_1.01.csv", header = T, row.names = 1))
+humantfs = as_tibble(read.csv(file = humantfs_name, header = T, row.names = 1))
+```

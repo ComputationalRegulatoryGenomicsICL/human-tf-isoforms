@@ -8,6 +8,7 @@ process DOMAIN_ANALYSIS {
     input:
     path rmd
     // arguments for rmd
+    path "humantfs_name"
     // tuple path(...), path(...), ...
 
     output:
@@ -17,6 +18,6 @@ process DOMAIN_ANALYSIS {
 
     script:
     """
-    render_rmd.R $rmd # arguments for Rmd
+    render_rmd.R ${rmd} ${humantfs_name}
     """
 }
