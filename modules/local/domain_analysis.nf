@@ -7,9 +7,8 @@ process DOMAIN_ANALYSIS {
 
     input:
     path rmd
-    // arguments for rmd
-    path "humantfs_name"
-    // tuple path(...), path(...), ...
+    tuple path("humantfs_name"), 
+          path("interpro_entries_name")
 
     output:
     path "tables"       , emit: tables_dir
@@ -18,6 +17,9 @@ process DOMAIN_ANALYSIS {
 
     script:
     """
-    render_rmd.R ${rmd} ${humantfs_name}
+    render_rmd.R \\
+        ${rmd} \\
+        ${humantfs_name} \\
+        ${interpro_entries_name}
     """
 }
