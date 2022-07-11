@@ -17,7 +17,10 @@ output:
 
 ```{r, include=T}
 stringsAsFactors = F
-library(tidyverse)
+#library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(stringr)
 library(scales)
 library(kableExtra)
 library(biomaRt)
@@ -31,7 +34,10 @@ library(msa)
 Print versions of the loaded libraries:
 
 ```{r, include=T}
-packageVersion(tidyverse)
+#packageVersion(tidyverse)
+packageVersion(ggplot2)
+packageVersion(dplyr)
+packageVersion(stringr)
 packageVersion(scales)
 packageVersion(kableExtra)
 packageVersion(biomaRt)
