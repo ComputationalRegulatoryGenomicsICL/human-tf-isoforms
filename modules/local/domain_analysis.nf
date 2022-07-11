@@ -1,5 +1,6 @@
 process DOMAIN_ANALYSIS {
-    label 'process_medium'
+    //label 'process_medium'
+    label 'process_low'
     stageInMode 'copy'
 
     container 'sviatsidorov/r_machine:1.0'
