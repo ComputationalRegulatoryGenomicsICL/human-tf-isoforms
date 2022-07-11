@@ -9,10 +9,6 @@ RUN apt-get clean all && \
         lzma \
         liblzma-dev \
         libbz2-dev
-#         libicu-dev \
-#         libc6-dev \
-#         libxml2 \
-#         libjpeg-dev
 
 # Set CRAN and BioC repositories for package installations
 RUN echo 'local({library(BiocManager); r <- repositories(); r["CRAN"] <- "https://cran.rstudio.com/"; options(repos = r)}); \
@@ -43,15 +39,3 @@ RUN R -e "install.packages('unixtools', , 'http://rforge.net/', type = 'source')
     R -e "BiocManager::install('XLConnect')" && \
     R -e "BiocManager::install('ComplexHeatmap')" && \
     R -e "BiocManager::install('rtracklayer')"
-
-# To install
-# Libs
-# dyn.load("/home/rstudio/libs/libicudata.so.67")
-# dyn.load("/home/rstudio/libs/libicuuc.so.67")
-# dyn.load("/home/rstudio/libs/libiconv.so.2")
-# dyn.load("/home/rstudio/libs/libxml2.so.2")
-# dyn.load("/home/rstudio/libs/libjpeg.so.9")
-
-# Packages
-# #AnnotationHub
-##ensembldb
