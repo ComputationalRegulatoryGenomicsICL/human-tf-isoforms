@@ -136,12 +136,11 @@ tfs %>%
 
 The five most abundant TF families are C2H2 ZF (`r nrow(tfs %>% filter(DBD == "C2H2 ZF"))`), Homeodomain (`r nrow(tfs %>% filter(DBD == "Homeodomain"))`), bHLH (`r nrow(tfs %>% filter(DBD == "bHLH"))`), TFs with unknown DBD (`r nrow(tfs %>% filter(DBD == "Unknown"))`), and bZIP (`r nrow(tfs %>% filter(DBD == "bZIP"))`), which corresponds very well to the histograms shown in [Lambert et al., 2018](https://www.sciencedirect.com/science/article/pii/S0092867418301065?via%3Dihub), Fig. 1B.
 
-# Investigate InterPro entries from HumanTFs
+## Investigate InterPro entries from HumanTFs
 
 Read in all records from the InterPro database v77.0 (14/11/2019):
 
 ```{r, include=T}
-#interpro_entries = read.delim("data/interpro77.0/entry.list")
 interpro_entries = read.delim(interpro_entries_name)
 ```
 
@@ -183,3 +182,4 @@ kable(head(dbd_ipr_humantfs)) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
 ```
+
