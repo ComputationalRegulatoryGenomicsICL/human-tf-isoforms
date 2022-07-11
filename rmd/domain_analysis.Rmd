@@ -1,5 +1,5 @@
 ---
-title: "Alternative splicing of domains in human transcription factors"
+title: "Analysis of domains in alternative TF isoforms"
 author: "Sviatoslav Sidorov"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
@@ -16,8 +16,22 @@ output:
 ---
 
 ```{r, include=T}
-library(dplyr)
-library(ggplot2)
+#require("knitr")
+#opts_knit$set(root.dir = "/home/rstudio")
+#knitr::opts_chunk$set(echo = TRUE)
+stringsAsFactors = F
+library(tidyverse)
+#library(ggplot2)
+#library(dplyr)
+#library(stringr)
+library(scales)
+library(kableExtra)
+library(biomaRt)
+library(seqinr)
+library(yaml)
+library(data.tree)
+library(XLConnect)
+library(msa)
 ```
 
 Print versions of the loaded libraries:
@@ -42,3 +56,4 @@ dir.create(file.path(".", tsv.dir))
 pdf.dir = "pdf"
 dir.create(file.path(".", pdf.dir))
 ```
+
