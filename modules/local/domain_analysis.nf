@@ -7,7 +7,7 @@ process DOMAIN_ANALYSIS {
 
     input:
     path rmd
-    path "humantfs_name", 
+    path "humantfs_name" 
     path "interpro_entries_name"
 
     output:
