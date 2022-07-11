@@ -18,9 +18,6 @@ output:
 ```{r, include=T}
 stringsAsFactors = F
 library(tidyverse)
-#library(ggplot2)
-#library(dplyr)
-#library(stringr)
 library(scales)
 library(kableExtra)
 library(biomaRt)
@@ -31,13 +28,12 @@ library(XLConnect)
 library(msa)
 ```
 
+## Print package versions
+
 Print versions of the loaded libraries:
 
 ```{r, include=T}
 packageVersion("tidyverse")
-#packageVersion("ggplot2")
-#packageVersion("dplyr")
-#packageVersion("stringr")
 packageVersion("scales")
 packageVersion("kableExtra")
 packageVersion("biomaRt")
@@ -48,6 +44,8 @@ packageVersion("XLConnect")
 packageVersion("msa")
 ```
 
+## Prepare input/output
+
 Read args and create output paths:
 
 ```{r, include=T}
@@ -57,10 +55,10 @@ args = commandArgs()
 
 #output.name = paste0(sub('\\.tsv', '', input.name), "_processed.tsv")
 
-tsv.dir = "tsv"
+tsv.dir = "tables"
 dir.create(file.path(".", tsv.dir))
 
-pdf.dir = "pdf"
+pdf.dir = "figure_panels"
 dir.create(file.path(".", pdf.dir))
 ```
 
