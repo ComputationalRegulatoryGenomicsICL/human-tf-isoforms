@@ -76,7 +76,7 @@ humantfs = humantfs %>%
   mutate(DBD = ifelse(DBD == "CxxC; AT hook", "CxxC ZF; AT hook", as.character(DBD)))
 ```
 
-Overall, ([Lambert et al., 2018](https://www.sciencedirect.com/science/article/pii/S0092867418301065?via%3Dihub)) consider `r nrow(humantfs)` proteins, of which `r nrow(humantfs %>% filter(Is.TF. == "Yes"))` they classify as transcription factors. `r nrow(humantfs %>% filter(Is.TF. == "Yes" & DBD != "Unknown"))` of the transcription factors have a known DBD.
+Overall, [Lambert et al., 2018](https://www.sciencedirect.com/science/article/pii/S0092867418301065?via%3Dihub) consider `r nrow(humantfs)` proteins, of which `r nrow(humantfs %>% filter(Is.TF. == "Yes"))` they classify as transcription factors. `r nrow(humantfs %>% filter(Is.TF. == "Yes" & DBD != "Unknown"))` of the transcription factors have a known DBD.
 
 Let's consider all `r nrow(humantfs %>% filter(Is.TF. == "Yes"))` transcription factors. Here is a snippet of the HumanTFs table:
 
@@ -87,7 +87,6 @@ kable(tfs[1:6,]) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
 ```
-
 
 This table contains `r nrow(humantfs %>% filter(Is.TF. == "Yes"))` human TFs. 
 
