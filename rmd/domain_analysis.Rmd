@@ -232,6 +232,7 @@ and so they are filtered out either.
 The table of biotypes of the selected genes was generated with the following code:
 
 ```{r, include=T, eval=F}
+# Not executed
 ensembl = useEnsembl(biomart = "ensembl",
                      dataset = "hsapiens_gene_ensembl",
                      version = "99")
