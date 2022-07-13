@@ -54,6 +54,7 @@ args = commandArgs()
 humantfs_name = args[9]
 interpro_entries_name = args[10]
 ensembl99_all_name = args[11]
+gene_biotype_table_name = args[12]
 
 tables_dir = "tables"
 dir.create(file.path(".", tables_dir))
@@ -219,12 +220,8 @@ kable(tfs[!tfs$Ensembl.ID %in% (ensg_enst_ensp %>% filter(ensembl_gene_id %in% t
 `DUX1_HUMAN` and `DUX3_HUMAN` are UniProt accessions that do not have any corresponding genes in Ensebml v99, while the other three genes are
 
 ```{r, include=T}
-ensembl = useEnsembl(biomart = "ensembl",
-                     dataset = "hsapiens_gene_ensembl",
-                     version = "99")
-gene_biotype_table = getBM(attributes = "gene_biotype", filters = "ensembl_gene_id", values = c("ENSG00000249459", "ENSG00000214189", "ENSG00000228623"), mart = ensembl)
-write.table(gene_biotype_table, file = "tables/gene_biotype_table_99.tsv", quote = F, sep = "\t", row.names = F)
-#gene_biotype_table = read.delim("gene_biotype_table_99.tsv")
+gene_biotype_table = read.delim(gene_biotype_table_name)
+
 kable(gene_biotype_table) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
@@ -232,8 +229,27 @@ kable(gene_biotype_table) %>%
 
 and so they are filtered out either.
 
+The table of biotypes of the selected genes was generated with the following code:
+
+```{r, include=T, eval=F}
+ensembl = useEnsembl(biomart = "ensembl",
+                     dataset = "hsapiens_gene_ensembl",
+                     version = "99")
+
+gene_biotype_table = getBM(attributes = "gene_biotype", 
+                           filters = "ensembl_gene_id", 
+                           values = c("ENSG00000249459", "ENSG00000214189", "ENSG00000228623"), 
+                           mart = ensembl)
+
+write.table(gene_biotype_table, 
+            file = "gene_biotype_table_99_selected.tsv", 
+            quote = F, 
+            sep = "\t", 
+            row.names = F)
+```
+
 The table was obtained using the following code:
 
-```{r, include=T}
+```{r, include=T, eval=F}
 # write.table(ensg_enst_ensp %>% filter(ensembl_gene_id %in% tfs$Ensembl.ID), file = "ensg_enst_ensp_99_tfs.tsv", quote = F, sep = "\t", row.names = F)
 ```

@@ -10,6 +10,7 @@ process DOMAIN_ANALYSIS {
     path humantfs_name 
     path interpro_entries_name
     path ensembl99_all_name
+    path gene_biotype_table_name
 
     output:
     path "tables"       , emit: tables_dir
@@ -22,6 +23,7 @@ process DOMAIN_ANALYSIS {
         ${rmd} \\
         ${humantfs_name} \\
         ${interpro_entries_name} \\
-        ${ensembl99_all_name}
+        ${ensembl99_all_name} \\
+        ${gene_biotype_table_name}
     """
 }

@@ -8,11 +8,14 @@ interpro_entries_list = file( "./input/interpro77.0/entry.list" )
 
 ensembl99_all_table = file( "./input/ensembl99/ensg_enst_ensp_99.tsv" )
 
+gene_biotype_table = file( "./input/ensembl99/gene_biotype_table_99_selected.tsv" )
+
 workflow NF_ANALYSIS_REPRODUCTION {
 
     DOMAIN_ANALYSIS( rmd_domain_analysis,
                      humantfs_database,
                      interpro_entries_list,
-                     ensembl99_all_table )
+                     ensembl99_all_table,
+                     gene_biotype_table )
 
 }
