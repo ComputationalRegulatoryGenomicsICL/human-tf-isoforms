@@ -9,6 +9,7 @@ process DOMAIN_ANALYSIS {
     path rmd
     path humantfs_name 
     path interpro_entries_name
+    path ensembl99_all_name
 
     output:
     path "tables"       , emit: tables_dir
@@ -20,6 +21,7 @@ process DOMAIN_ANALYSIS {
     render_rmd.R \\
         ${rmd} \\
         ${humantfs_name} \\
-        ${interpro_entries_name}
+        ${interpro_entries_name} \\
+        ${ensembl99_all_name}
     """
 }

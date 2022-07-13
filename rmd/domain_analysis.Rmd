@@ -53,6 +53,7 @@ args = commandArgs()
 
 humantfs_name = args[9]
 interpro_entries_name = args[10]
+ensembl99_all_name = args[11]
 
 tables_dir = "tables"
 dir.create(file.path(".", tables_dir))
@@ -183,3 +184,56 @@ kable(head(dbd_ipr_humantfs)) %>%
   scroll_box(width = "100%")
 ```
 
+## Investigate transcription factors from HumanTFs in Ensembl 99
+
+Parse the whole human Ensembl 99 annotation:
+
+```{r, include=T}
+ensg_enst_ensp = read.delim(ensembl99_all_name)
+```
+
+This annotation was obtained using the following code:
+
+```{r, include=T, eval=F}
+# Not executed
+ensembl = useEnsembl(biomart = "ensembl",
+                     dataset = "hsapiens_gene_ensembl",
+                     version = "99")
+
+ensg_enst_ensp = getBM(attributes = c("ensembl_gene_id", "ensembl_transcript_id", "ensembl_peptide_id"),
+                       filters = "transcript_biotype",
+                       values = "protein_coding",
+                       mart = ensembl)
+
+write.table(ensg_enst_ensp, file = "ensg_enst_ensp_99.tsv", quote = F, sep = "\t", row.names = F)
+```
+
+The annotation contains `r ensg_enst_ensp %>% filter(ensembl_gene_id %in% tfs$Ensembl.ID) %>% pull(ensembl_gene_id) %>% unique() %>% length()` TF genes from the HumanTFs database and `r ensg_enst_ensp %>% filter(ensembl_gene_id %in% tfs$Ensembl.ID) %>% pull(ensembl_transcript_id) %>% unique() %>% length()` coding TF transcripts. So `r tfs %>% pull(Ensembl.ID) %>% unique() %>% length() - ensg_enst_ensp %>% filter(ensembl_gene_id %in% tfs$Ensembl.ID) %>% pull(ensembl_gene_id) %>% unique() %>% length()` TFs from HumanTFs do not have coding transcripts in Ensembl 99:
+
+```{r, include=T}
+kable(tfs[!tfs$Ensembl.ID %in% (ensg_enst_ensp %>% filter(ensembl_gene_id %in% tfs$Ensembl.ID) %>% pull(ensembl_gene_id) %>% unique()), "Ensembl.ID"]) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
+```
+
+`DUX1_HUMAN` and `DUX3_HUMAN` are UniProt accessions that do not have any corresponding genes in Ensebml v99, while the other three genes are
+
+```{r, include=T}
+ensembl = useEnsembl(biomart = "ensembl",
+                     dataset = "hsapiens_gene_ensembl",
+                     version = "99")
+gene_biotype_table = getBM(attributes = "gene_biotype", filters = "ensembl_gene_id", values = c("ENSG00000249459", "ENSG00000214189", "ENSG00000228623"), mart = ensembl)
+write.table(gene_biotype_table, file = "tables/gene_biotype_table_99.tsv", quote = F, sep = "\t", row.names = F)
+#gene_biotype_table = read.delim("gene_biotype_table_99.tsv")
+kable(gene_biotype_table) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
+```
+
+and so they are filtered out either.
+
+The table was obtained using the following code:
+
+```{r, include=T}
+# write.table(ensg_enst_ensp %>% filter(ensembl_gene_id %in% tfs$Ensembl.ID), file = "ensg_enst_ensp_99_tfs.tsv", quote = F, sep = "\t", row.names = F)
+```
