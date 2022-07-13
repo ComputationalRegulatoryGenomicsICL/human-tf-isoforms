@@ -6,7 +6,7 @@ humantfs_database = file( "./input/humantfs1.01/DatabaseExtract_v_1.01.csv" )
 
 interpro_entries_list = file( "./input/interpro77.0/entry.list" )
 
-ensembl99_all_table = file( "./input/ensembl99/ensg_enst_ensp_99.tsv " )
+ensembl99_all_table = file( "./input/ensembl99/ensg_enst_ensp_99.tsv" )
 
 workflow NF_ANALYSIS_REPRODUCTION {
 
