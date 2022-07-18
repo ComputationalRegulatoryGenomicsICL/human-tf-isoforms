@@ -2,8 +2,11 @@ process DOMAIN_ANALYSIS {
     //label 'process_medium'
     label 'process_low'
     stageInMode 'copy'
+    publishDir "${params.outdir}/tables", pattern: "*.tsv", mode: params.publish_dir_mode
+    publishDir "${params.outdir}/panels", pattern: "*.pdf", mode: params.publish_dir_mode
+    publishDir "${params.outdir}/notebooks", pattern: "*.html", mode: params.publish_dir_mode
 
-    container 'sviatsidorov/r_machine:1.0'
+    container 'sviatsidorov/r_machine:1.1'
 
     input:
     path rmd
@@ -20,8 +23,6 @@ process DOMAIN_ANALYSIS {
     path nondbd_annot
 
     output:
-    //path "tables"       , emit: tables_dir
-    //path "figure_panels", emit: figure_panels_dir
     path "*.tsv"          , emit: tables
     path "*.pdf"          , emit: plots
     path "*.html"         , emit: knitted_html

@@ -63,13 +63,6 @@ ensg_enst_tsl_name = args[17]
 ens99_pep_name = args[18]
 nondbd.annot_name = args[19]
 
-cat(NULL, file = "BlankTSV.tsv")
-
-cat(NULL, file = "BlankPDF.pdf")
-
-# tables_dir = "tables"
-#dir.create(file.path(".", tables_dir))
-
-# figure_panels_dir = "figure_panels"
-#dir.create(file.path(".", figure_panels_dir))
+cat(NULL, file = "blank.tsv")
+cat(NULL, file = "blank.pdf")
 ```

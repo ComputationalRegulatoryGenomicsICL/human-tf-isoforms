@@ -29,6 +29,7 @@ RUN R -e "install.packages('unixtools', , 'http://rforge.net/', type = 'source')
     R -e "install.packages('rlist')" && \
     R -e "install.packages('seqinr')" && \
     R -e "install.packages('tictoc')" && \
+    R -e "install.packages('R.utils')" && \
     R -e "devtools::install_github('davidsjoberg/ggsankey')" && \
     R -e "BiocManager::install('biomaRt')" && \
     R -e "BiocManager::install('hypeR')" && \
