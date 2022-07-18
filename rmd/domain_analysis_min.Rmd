@@ -1,0 +1,77 @@
+---
+title: "Analysis of domains in alternative TF isoforms"
+author: "Sviatoslav Sidorov"
+date: "`r format(Sys.time(), '%d %B %Y')`"
+output:
+  html_document:
+    collapsed: no
+    fig_align: center
+    fig_caption: yes
+    highlight: haddock
+    keep_md: yes
+    number_sections: yes
+    toc: yes
+    toc_depth: 3
+    toc_float: yes
+---
+
+```{r, include=T}
+stringsAsFactors = F
+library(tidyverse)
+library(scales)
+library(kableExtra)
+library(biomaRt)
+library(seqinr)
+library(yaml)
+library(data.tree)
+library(XLConnect)
+library(msa)
+library(R.utils)
+```
+
+# Print package versions
+
+Print versions of the loaded libraries:
+
+```{r, include=T}
+packageVersion("tidyverse")
+packageVersion("scales")
+packageVersion("kableExtra")
+packageVersion("biomaRt")
+packageVersion("seqinr")
+packageVersion("yaml")
+packageVersion("data.tree")
+packageVersion("XLConnect")
+packageVersion("msa")
+packageVersion("R.utils")
+```
+
+# Read input and organise output
+
+Read args and create output paths:
+
+```{r, include=T}
+args = commandArgs()
+
+humantfs_name = args[9]
+interpro_entries_name = args[10]
+ensembl99_all_name = args[11]
+gene_biotype_table_name = args[12]
+protein_fasta_tfs_name = args[13]
+ipr_hierarchy_yaml_name = args[14]
+draft_classification_table_name = args[15]
+domain_classification_wb_name = args[16]
+ensg_enst_tsl_name = args[17]
+ens99_pep_name = args[18]
+nondbd.annot_name = args[19]
+
+cat(NULL, file = "BlankTSV.tsv")
+
+cat(NULL, file = "BlankPDF.pdf")
+
+# tables_dir = "tables"
+dir.create(file.path(".", tables_dir))
+
+# figure_panels_dir = "figure_panels"
+dir.create(file.path(".", figure_panels_dir))
+```

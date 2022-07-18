@@ -7,23 +7,39 @@ process DOMAIN_ANALYSIS {
 
     input:
     path rmd
-    path humantfs_name 
-    path interpro_entries_name
-    path ensembl99_all_name
-    path gene_biotype_table_name
+    path humantfs 
+    path interpro_entries
+    path ensembl99_all
+    path gene_biotype_table
+    path protein_fasta_tfs
+    path ipr_hierarchy_yaml
+    path draft_classification_table
+    path domain_classification_wb
+    path ensg_enst_tsl
+    path ens99_pep
+    path nondbd_annot
 
     output:
-    path "tables"       , emit: tables_dir
-    path "figure_panels", emit: figure_panels_dir
-    path "*.html"       , emit: knitted_html
+    //path "tables"       , emit: tables_dir
+    //path "figure_panels", emit: figure_panels_dir
+    path "*.tsv"          , emit: tables
+    path "*.pdf"          , emit: plots
+    path "*.html"         , emit: knitted_html
 
     script:
     """
     render_rmd.R \\
         ${rmd} \\
-        ${humantfs_name} \\
-        ${interpro_entries_name} \\
-        ${ensembl99_all_name} \\
-        ${gene_biotype_table_name}
+        ${humantfs} \\
+        ${interpro_entries} \\
+        ${ensembl99_all} \\
+        ${gene_biotype_table} \\
+        ${protein_fasta_tfs} \\
+        ${ipr_hierarchy_yaml} \\
+        ${draft_classification_table} \\
+        ${domain_classification_wb} \\
+        ${ensg_enst_tsl} \\
+        ${ens99_pep} \\
+        ${nondbd_annot}
     """
 }
