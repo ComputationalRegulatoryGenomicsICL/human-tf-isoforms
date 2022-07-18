@@ -4,9 +4,9 @@ process DOMAIN_ANALYSIS {
     stageInMode 'copy'
 
     // Output tables, panels and the notebook in the overall dirs
-    publishDir "${params.outdir}/tables", pattern: "*.tsv", mode: params.publish_dir_mode
-    publishDir "${params.outdir}/panels", pattern: "*.pdf", mode: params.publish_dir_mode
-    publishDir "${params.outdir}/notebooks", pattern: "*.html", mode: params.publish_dir_mode
+    publishDir "${params.outdir}/output_all/tables", pattern: "*.tsv", mode: params.publish_dir_mode
+    publishDir "${params.outdir}/output_all/panels", pattern: "*.pdf", mode: params.publish_dir_mode
+    publishDir "${params.outdir}/output_all/notebooks", pattern: "*.html", mode: params.publish_dir_mode
 
     // Output tables, panels and the notebook in the module-specific dirs
     publishDir "${params.outdir}/output_per_module/${task.process.tokenize(':')[-1].toLowerCase()}/tables", pattern: "*.tsv", mode: params.publish_dir_mode
