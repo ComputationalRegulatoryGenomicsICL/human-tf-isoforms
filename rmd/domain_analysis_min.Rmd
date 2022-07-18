@@ -68,8 +68,8 @@ cat(NULL, file = "BlankTSV.tsv")
 cat(NULL, file = "BlankPDF.pdf")
 
 # tables_dir = "tables"
-dir.create(file.path(".", tables_dir))
+#dir.create(file.path(".", tables_dir))
 
 # figure_panels_dir = "figure_panels"
-dir.create(file.path(".", figure_panels_dir))
+#dir.create(file.path(".", figure_panels_dir))
 ```
