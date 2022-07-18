@@ -22,7 +22,7 @@ ensg_enst_tsl = file( "./input/ensembl99/ensg_enst_tsl_99.tsv" )
 
 ens99_pep = file( "./input/ensembl99/Homo_sapiens.GRCh38.pep.all.99.tsv.gz" )
 
-nondbd_annot = file( "./input/domain_classification/Other_domains_manually_curated_filled.csv" )
+nondbd_annot = file( "./input/domain_classification/Other_domains_manually_curated_filled.tsv" )
 
 workflow NF_ANALYSIS_REPRODUCTION {
 
