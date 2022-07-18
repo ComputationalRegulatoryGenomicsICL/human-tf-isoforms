@@ -26,7 +26,6 @@ library(yaml)
 library(data.tree)
 library(XLConnect)
 library(msa)
-library(R.utils)
 ```
 
 # Print package versions
@@ -43,7 +42,6 @@ packageVersion("yaml")
 packageVersion("data.tree")
 packageVersion("XLConnect")
 packageVersion("msa")
-packageVersion("R.utils")
 ```
 
 # Read input and organise output
