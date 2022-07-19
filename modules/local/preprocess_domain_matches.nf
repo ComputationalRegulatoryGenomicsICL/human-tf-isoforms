@@ -25,6 +25,7 @@ process PREPROCESS_DOMAIN_MATCHES {
     path dbd_ipr_humantfs
     path ensg_enst_ensp
     path tfs
+    path draft_classification_table
 
     // path humantfs 
     // path ensembl99_all
@@ -52,6 +53,7 @@ process PREPROCESS_DOMAIN_MATCHES {
         ${ips_domains_ipr_ens99_iprs} \\
         ${dbd_ipr_humantfs} \\
         ${ensg_enst_ensp} \\
-        ${tfs}
+        ${tfs} \\
+        ${draft_classification_table}
     """
 }
