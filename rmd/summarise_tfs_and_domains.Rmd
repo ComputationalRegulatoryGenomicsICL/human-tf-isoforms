@@ -137,7 +137,9 @@ interpro_entries = read.delim(interpro_entries_name)
 Some InterPro entries used in HumanTFs were removed from InterPro v77 which is used in this analysis:
 
 ```{r, include=T}
-humantfs_dbd_ids[!humantfs_dbd_ids %in% (interpro_entries %>% pull(ENTRY_AC))]
+kable(humantfs_dbd_ids[!humantfs_dbd_ids %in% (interpro_entries %>% pull(ENTRY_AC))]) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
 ```
 
 According to the InterPro helpdesk, signatures from the removed InterPro entries are removed themselves or integrated into other InterPro accessions. So, let us edit the list of DBD InterPro accessions according to the information from the helpdesk:
