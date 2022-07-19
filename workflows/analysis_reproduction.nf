@@ -14,7 +14,7 @@ rmd_annotate_nondbds = file( "./rmd/annotate_nondbds.Rmd" )
 // Input data
 humantfs_database = file( "./input/humantfs1.01/DatabaseExtract_v_1.01.csv" )
 interpro_entries_list = file( "./input/interpro77.0/entry.list" )
-ensembl99_all_table = file( "./input/ensembl99/ensg_enst_ensp_99.tsv" )
+ensg_enst_ensp = file( "./input/ensembl99/ensg_enst_ensp_99.tsv" )
 gene_biotype_table = file( "./input/ensembl99/gene_biotype_table_99_selected.tsv" )
 protein_fasta_tfs = file( "./input/interpro_scans/protein_fasta_tfs_99.fa.tsv" )
 ipr_hierarchy_yaml = file ( "./input/interpro77.0/ParentChildTreeFile_with_status.yaml" )
@@ -30,9 +30,19 @@ workflow NF_ANALYSIS_REPRODUCTION {
         rmd_summarise_tfs_and_domains,
         humantfs_database,
         interpro_entries_list,
-        ensembl99_all_table,
+        ensg_enst_ensp,
         gene_biotype_table,
         protein_fasta_tfs
+    )
+
+    PREPROCESS_DOMAIN_MATCHES (
+        rmd_preprocess_domain_matches,
+        SUMMARISE_TFS_AND_DOMAINS.out.ips_domains_ipr_ens99,
+        ipr_hierarchy_yaml,
+        SUMMARISE_TFS_AND_DOMAINS.out.humantfs_dbd_ids,
+        SUMMARISE_TFS_AND_DOMAINS.out.ips_domains_ipr_ens99_iprs,
+        SUMMARISE_TFS_AND_DOMAINS.out.dbd_ipr_humantfs,
+        ensg_enst_ensp
     )
 
     // DOMAIN_ANALYSIS( rmd_domain_analysis,
@@ -47,7 +57,5 @@ workflow NF_ANALYSIS_REPRODUCTION {
     //                  ensg_enst_tsl,
     //                  ens99_pep,
     //                  nondbd_annot )
-
-
 
 }

@@ -43,7 +43,7 @@ args = commandArgs()
 
 humantfs_name = args[9]
 interpro_entries_name = args[10]
-ensembl99_all_name = args[11]
+ensg_enst_ensp_name = args[11]
 gene_biotype_table_name = args[12]
 protein_fasta_tfs_name = args[13]
 ```
@@ -183,7 +183,7 @@ kable(head(dbd_ipr_humantfs)) %>%
 Parse the whole human Ensembl 99 annotation:
 
 ```{r, include=T}
-ensg_enst_ensp = read.delim(ensembl99_all_name)
+ensg_enst_ensp = read.delim(ensg_enst_ensp_name)
 ```
 
 This annotation was obtained using the following code:
@@ -317,4 +317,32 @@ Overall, there are `r nrow(ips_domains_ipr_ens99)` signatures from `r ips_domain
 kable(dbd_ipr_humantfs[!dbd_ipr_humantfs$ENTRY_AC %in% ips_domains_ipr_ens99_iprs,]) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
+```
+
+Write down tables to use it in other notebooks:
+
+```{r, include=T}
+write.table(ips_domains_ipr_ens99,
+            file = "ips_domains_ipr_ens99.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
+
+write.table(humantfs_dbd_ids,
+            file = "humantfs_dbd_ids.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
+
+write.table(ips_domains_ipr_ens99_iprs,
+            file = "ips_domains_ipr_ens99_iprs.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
+
+write.table(dbd_ipr_humantfs,
+            file = "dbd_ipr_humantfs.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
 ```

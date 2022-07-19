@@ -18,14 +18,10 @@ output:
 ```{r, include=T}
 stringsAsFactors = F
 library(tidyverse)
-library(scales)
 library(kableExtra)
-library(biomaRt)
-library(seqinr)
 library(yaml)
 library(data.tree)
 library(XLConnect)
-library(msa)
 library(R.utils)
 ```
 
@@ -35,14 +31,10 @@ Print versions of the loaded libraries:
 
 ```{r, include=T}
 packageVersion("tidyverse")
-packageVersion("scales")
 packageVersion("kableExtra")
-packageVersion("biomaRt")
-packageVersion("seqinr")
 packageVersion("yaml")
 packageVersion("data.tree")
 packageVersion("XLConnect")
-packageVersion("msa")
 packageVersion("R.utils")
 ```
 
@@ -53,17 +45,23 @@ Read args:
 ```{r, include=T}
 args = commandArgs()
 
-humantfs_name = args[9]
-interpro_entries_name = args[10]
-ensembl99_all_name = args[11]
-gene_biotype_table_name = args[12]
-protein_fasta_tfs_name = args[13]
-ipr_hierarchy_yaml_name = args[14]
-draft_classification_table_name = args[15]
-domain_classification_wb_name = args[16]
-ensg_enst_tsl_name = args[17]
-ens99_pep_name = args[18]
-nondbd.annot_name = args[19]
+ips_domains_ipr_ens99 = args[9]
+ipr_hierarchy_yaml_name = args[10]
+humantfs_dbd_ids_name = args[11]
+ips_domains_ipr_ens99_iprs_name = args[12]
+dbd_ipr_humantfs_name = args[13]
+ensg_enst_ensp_name = args[14]
+
+#humantfs_name = args[9]
+#interpro_entries_name = args[10]
+#ensembl99_all_name = args[11]
+#gene_biotype_table_name = args[12]
+#protein_fasta_tfs_name = args[13]
+#draft_classification_table_name = args[15]
+#domain_classification_wb_name = args[16]
+#ensg_enst_tsl_name = args[17]
+#ens99_pep_name = args[18]
+#nondbd.annot_name = args[19]
 ```
 
 # Prepare for the filtering of matches in TF protein products from Ensembl v99
@@ -118,6 +116,7 @@ db_intersections = as.data.frame(table(unlist(group_map(ips_domains_ipr_ens99 %>
                                                 group_by(ensembl_transcript_id, ipr_accession) %>%
                                                 arrange(db),
                                               ~ paste(unique(.x %>% pull(db)), collapse = "_")))))
+
 db_intersections %>%
   mutate(database_combination = Var1) %>%
   mutate(count = Freq) %>%
@@ -150,90 +149,111 @@ Next, obtain the lists of databases whose signatures comprise different types of
 Active sites:
 
 ```{r, include=T}
-ips_domains_ipr_ens99 %>%
-  mutate(ipr_accession = as.character(ipr_accession)) %>%
-  left_join(interpro_entries %>% mutate(ENTRY_AC = as.character(ENTRY_AC)), by = c("ipr_accession" = "ENTRY_AC")) %>%
-  mutate(db = as.character(db)) %>%
-  filter(ENTRY_TYPE == "Active_site") %>%
-  pull(db) %>%
-  unique()
+kable(ips_domains_ipr_ens99 %>%
+        mutate(ipr_accession = as.character(ipr_accession)) %>%
+        left_join(interpro_entries %>% mutate(ENTRY_AC = as.character(ENTRY_AC)), 
+                  by = c("ipr_accession" = "ENTRY_AC")) %>%
+        mutate(db = as.character(db)) %>%
+        filter(ENTRY_TYPE == "Active_site") %>%
+        pull(db) %>%
+        unique()) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
 ```
 
 Binding sites:
 
 ```{r, include=T}
-ips_domains_ipr_ens99 %>%
-  mutate(ipr_accession = as.character(ipr_accession)) %>%
-  left_join(interpro_entries %>% mutate(ENTRY_AC = as.character(ENTRY_AC)), by = c("ipr_accession" = "ENTRY_AC")) %>%
-  mutate(db = as.character(db)) %>%
-  filter(ENTRY_TYPE == "Binding_site") %>%
-  pull(db) %>%
-  unique()
+kable(ips_domains_ipr_ens99 %>%
+        mutate(ipr_accession = as.character(ipr_accession)) %>%
+        left_join(interpro_entries %>% mutate(ENTRY_AC = as.character(ENTRY_AC)), 
+                  by = c("ipr_accession" = "ENTRY_AC")) %>%
+        mutate(db = as.character(db)) %>%
+        filter(ENTRY_TYPE == "Binding_site") %>%
+        pull(db) %>%
+        unique()) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
 ```
 
 Conserved sites:
 
 ```{r, include=T}
-ips_domains_ipr_ens99 %>%
-  mutate(ipr_accession = as.character(ipr_accession)) %>%
-  left_join(interpro_entries %>% mutate(ENTRY_AC = as.character(ENTRY_AC)), by = c("ipr_accession" = "ENTRY_AC")) %>%
-  mutate(db = as.character(db)) %>%
-  filter(ENTRY_TYPE == "Conserved_site") %>%
-  pull(db) %>%
-  unique()
+kable(ips_domains_ipr_ens99 %>%
+        mutate(ipr_accession = as.character(ipr_accession)) %>%
+        left_join(interpro_entries %>% mutate(ENTRY_AC = as.character(ENTRY_AC)), 
+                  by = c("ipr_accession" = "ENTRY_AC")) %>%
+        mutate(db = as.character(db)) %>%
+        filter(ENTRY_TYPE == "Conserved_site") %>%
+        pull(db) %>%
+        unique()) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
 ```
 
 Domains:
 
 ```{r, include=T}
-ips_domains_ipr_ens99 %>%
-  mutate(ipr_accession = as.character(ipr_accession)) %>%
-  left_join(interpro_entries %>% mutate(ENTRY_AC = as.character(ENTRY_AC)), by = c("ipr_accession" = "ENTRY_AC")) %>%
-  mutate(db = as.character(db)) %>%
-  filter(ENTRY_TYPE == "Domain") %>%
-  pull(db) %>%
-  unique()
+kable(ips_domains_ipr_ens99 %>%
+        mutate(ipr_accession = as.character(ipr_accession)) %>%
+        left_join(interpro_entries %>% mutate(ENTRY_AC = as.character(ENTRY_AC)), 
+                  by = c("ipr_accession" = "ENTRY_AC")) %>%
+        mutate(db = as.character(db)) %>%
+        filter(ENTRY_TYPE == "Domain") %>%
+        pull(db) %>%
+        unique()) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
 ```
 
 Families:
 
 ```{r, include=T}
-ips_domains_ipr_ens99 %>%
-  mutate(ipr_accession = as.character(ipr_accession)) %>%
-  left_join(interpro_entries %>% mutate(ENTRY_AC = as.character(ENTRY_AC)), by = c("ipr_accession" = "ENTRY_AC")) %>%
-  mutate(db = as.character(db)) %>%
-  filter(ENTRY_TYPE == "Family") %>%
-  pull(db) %>%
-  unique()
+kable(ips_domains_ipr_ens99 %>%
+        mutate(ipr_accession = as.character(ipr_accession)) %>%
+        left_join(interpro_entries %>% mutate(ENTRY_AC = as.character(ENTRY_AC)), 
+                  by = c("ipr_accession" = "ENTRY_AC")) %>%
+        mutate(db = as.character(db)) %>%
+        filter(ENTRY_TYPE == "Family") %>%
+        pull(db) %>%
+        unique()) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
 ```
 
 Homologous Superfamilies:
 
 ```{r, include=T}
-ips_domains_ipr_ens99 %>%
-  mutate(ipr_accession = as.character(ipr_accession)) %>%
-  left_join(interpro_entries %>% mutate(ENTRY_AC = as.character(ENTRY_AC)), by = c("ipr_accession" = "ENTRY_AC")) %>%
-  mutate(db = as.character(db)) %>%
-  filter(ENTRY_TYPE == "Homologous_superfamily") %>%
-  pull(db) %>%
-  unique()
+kable(ips_domains_ipr_ens99 %>%
+        mutate(ipr_accession = as.character(ipr_accession)) %>%
+        left_join(interpro_entries %>% mutate(ENTRY_AC = as.character(ENTRY_AC)), 
+                  by = c("ipr_accession" = "ENTRY_AC")) %>%
+        mutate(db = as.character(db)) %>%
+        filter(ENTRY_TYPE == "Homologous_superfamily") %>%
+        pull(db) %>%
+        unique()) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
 ```
 
 Repeats:
 
 ```{r, include=T}
-ips_domains_ipr_ens99 %>%
-  mutate(ipr_accession = as.character(ipr_accession)) %>%
-  left_join(interpro_entries %>% mutate(ENTRY_AC = as.character(ENTRY_AC)), by = c("ipr_accession" = "ENTRY_AC")) %>%
-  mutate(db = as.character(db)) %>%
-  filter(ENTRY_TYPE == "Repeat") %>%
-  pull(db) %>%
-  unique()
+kable(ips_domains_ipr_ens99 %>%
+        mutate(ipr_accession = as.character(ipr_accession)) %>%
+        left_join(interpro_entries %>% mutate(ENTRY_AC = as.character(ENTRY_AC)), 
+                  by = c("ipr_accession" = "ENTRY_AC")) %>%
+        mutate(db = as.character(db)) %>%
+        filter(ENTRY_TYPE == "Repeat") %>%
+        pull(db) %>%
+        unique()) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
 ```
 
-As we saw above, some InterPro entries of the type Family have not only PIRSF or PANTHER signatures (which usually span the whole protein) but also domain-type signatures (Pfam, SMART, ProSiteProfiles, CDD, TIGRFAM, Hamap). 
+As we saw above, some InterPro entries of the type Family have not only PIRSF or PANTHER signatures (which usually span the whole protein) but also domain-type signatures (Pfam, SMART, ProSiteProfiles, CDD, TIGRFAM, Hamap).
 
-I consider Hamap signatures to be domains, because, although Hamap is a database of protein families, it has detailed annotation rules for each family which include possible presence of certain domains ([Pedruzzi et al., 2015](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4383873/)); so, Hamap matches might designate domains as well. 
+I consider Hamap signatures to be domains, because, although Hamap is a database of protein families, it has detailed annotation rules for each family which include possible presence of certain domains ([Pedruzzi et al., 2015](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4383873/)); so, Hamap matches might designate domains as well.
 
 Consequently, it is better to re-calculate the integrated coordinates of such Family entries excluding PIRSF and PANTHER signatures, so the new integrated coordinates reflect actual domains:
 
@@ -242,15 +262,21 @@ calc_new_int_coords = function(start, stop, int_start, int_stop, db) {
   all_matches = data.frame(start = start,
                            stop = stop,
                            db = as.character(db))
+
   domain_matches = all_matches %>%
     filter((db != "PIRSF") & (db != "PANTHER"))
+
   domain_matches_n = domain_matches %>%
      nrow()
+
   if (domain_matches_n == 0) {
     return(paste0(as.character(int_start), "_", as.character(int_stop)))
   }
+
   new_int_start = min(domain_matches$start)
+
   new_int_stop = max(domain_matches$stop)
+
   return(paste0(as.character(new_int_start), "_", as.character(new_int_stop)))
 }
 
@@ -338,9 +364,18 @@ ips_domains_ipr_ens99_int_specific_retained_iprs = ips_domains_ipr_ens99_int_spe
   unique()
 ```
 
+Load `humantfs_dbd_ids` and `ips_domains_ipr_ens99_iprs`:
+
+```{r, include=T}
+humantfs_dbd_ids = read.delim(humantfs_dbd_ids_name)
+ips_domains_ipr_ens99_iprs = read.delim(ips_domains_ipr_ens99_iprs_name)
+```
+
 Now we have `r ips_domains_ipr_ens99_int_specific_retained_iprs %>% length()` unique specific InterPro entries out of `r ips_domains_ipr_ens99_iprs %>% length()` we had after scanning (specific and general together). So, almost all matches are specific. `r length(ips_domains_ipr_ens99_int_specific_retained_iprs[ips_domains_ipr_ens99_int_specific_retained_iprs %in% humantfs_dbd_ids])` of these entries are from HumanTFs. The following `r length(ips_domains_ipr_ens99_iprs[ips_domains_ipr_ens99_iprs %in% humantfs_dbd_ids]) - length(ips_domains_ipr_ens99_int_specific_retained_iprs[ips_domains_ipr_ens99_int_specific_retained_iprs %in% humantfs_dbd_ids])` InterPro entries from HumanTFs are general:
 
 ```{r, include=T}
+dbd_ipr_humantfs = read.delim(dbd_ipr_humantfs_name)
+
 kable(dbd_ipr_humantfs[(dbd_ipr_humantfs$ENTRY_AC %in% ips_domains_ipr_ens99_iprs) & (!dbd_ipr_humantfs$ENTRY_AC %in% ips_domains_ipr_ens99_int_specific_retained_iprs),]) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
@@ -376,21 +411,31 @@ Check if we have overlapping specific domain InterPro entries (overlaps are calc
 ```{r, include=T}
 check_overlaps = function(int_start, int_stop) {
   overlaps = c()
+
   all_coords = data.frame(int_start = int_start,
                           int_stop = int_stop)
+
   for (i in 1:nrow(all_coords)) {
     i_start = all_coords[i, "int_start"]
+
     i_stop = all_coords[i, "int_stop"]
+
     overlap_detected = F
+
     for (j in 1:nrow(all_coords)) {
       if (j == i) {
         next
       }
+
       j_start = all_coords[j, "int_start"]
+
       j_stop = all_coords[j, "int_stop"]
+
       if (min(i_stop, j_stop) - max(i_start, j_start) > 0) {
         overlaps = c(overlaps, T)
+
         overlap_detected = T
+
         break
       }
     }
@@ -398,6 +443,7 @@ check_overlaps = function(int_start, int_stop) {
       overlaps = c(overlaps, F)
     }
   }
+
   return(overlaps)
 }
 
@@ -415,6 +461,12 @@ tr.with.overlapping.domains.count = ips_domains_ipr_ens99_int_specific_retained_
   pull(ensembl_transcript_id) %>%
   unique() %>%
   length()
+```
+
+Load `ensg_enst_ensp`:
+
+```{r, include=T}
+ensg_enst_ensp = read.delim(ensg_enst_ensp_name)
 ```
 
 We have `r nrow(ips_domains_ipr_ens99_int_specific_retained_overlapping.dom)` overlapping specific domains (so they are not in hierarchical relationship in InterPro)! They are located in `r tr.with.overlapping.domains.count` transcripts out of the total number of transcripts (`r ensg_enst_ensp %>% filter(ensembl_gene_id %in% tfs$Ensembl.ID) %>% pull(ensembl_transcript_id) %>% unique() %>% length()`). Let us retain them at present, as they can have different meaning. For example, 
@@ -454,7 +506,9 @@ outside_domains = function(int_start, int_stop, ipr_type, i, ipr_status) {
 
   for (j in 1:nrow(domain_matches)) {
     j_start = domain_matches[j, "int_start"]
+
     j_stop = domain_matches[j, "int_stop"]
+
     if (min(i_stop, j_stop) - max(i_start, j_start) > 0) {
       return(F)
     }
@@ -580,7 +634,9 @@ non_dom_family_iprs = ips_domains_ipr_ens99_int_specific_retained1 %>%
 non_dom_family_iprs_unique = non_dom_family_iprs %>%
   unique()
 
-dom_family_iprs_unique[dom_family_iprs_unique %in% non_dom_family_iprs_unique]
+kable(dom_family_iprs_unique[dom_family_iprs_unique %in% non_dom_family_iprs_unique]) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
 ```
 
 No, there are `r length(dom_family_iprs_unique[dom_family_iprs_unique %in% non_dom_family_iprs_unique])` Family InterPro entries which have domain signatures in some transcripts, but do not have them in some other transcripts. We need to account for this in further analysis.
@@ -691,7 +747,9 @@ overlapping_domfam_iprs_unique = overlapping_domfams %>%
   pull(domfam_overlap) %>% 
   unique()
 
-overlapping_domfam_iprs_unique
+kable(overlapping_domfam_iprs_unique) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
 ```
 
 So, `r length(overlapping_domfam_iprs_unique)` unique Domain-Family InterPro entries overlap with entries of other types. Overall, we have `r overlapping_domfams %>% group_by(ensembl_transcript_id) %>% dplyr::select(domfam_overlap) %>% distinct() %>% ungroup() %>% pull(domfam_overlap) %>% length()` such Domain-Family entries. Hence, we do need to prioritise Domain-Family entries next and filter all remaining (non-Domain) entries against them.
@@ -982,10 +1040,12 @@ Thus, we have `r nrow(ips_domains_ipr_ens99_int_specific_retained2_overlapping.s
 Check how many Homologous Superfamily entries overlap in each transcript:
 
 ```{r, include=T}
-ips_domains_ipr_ens99_int_specific_retained2_overlapping.sf %>%
-  mutate(n = n()) %>%
-  pull(n) %>%
-  unique()
+kable(ips_domains_ipr_ens99_int_specific_retained2_overlapping.sf %>%
+        mutate(n = n()) %>%
+        pull(n) %>%
+        unique()) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
 ```
 
 So, overlapping Homologous Superfamily entries are in pairs. Check what pairs of InterPro entries they are:
@@ -2039,11 +2099,11 @@ Some examples of domain architectures in TF isoforms are shown below:
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
-  mutate(start = as.numeric(start)) %>%
-  mutate(stop = as.numeric(stop)) %>%
-  filter(ensembl_transcript_id == "ENST00000395867") %>%
-  dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
-  arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
+        mutate(start = as.numeric(start)) %>%
+        mutate(stop = as.numeric(stop)) %>%
+        filter(ensembl_transcript_id == "ENST00000395867") %>%
+        dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
+        arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
 ```
@@ -2052,11 +2112,11 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
-  mutate(start = as.numeric(start)) %>%
-  mutate(stop = as.numeric(stop)) %>%
-  filter(ensembl_transcript_id == "ENST00000342301") %>%
-  dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
-  arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
+        mutate(start = as.numeric(start)) %>%
+        mutate(stop = as.numeric(stop)) %>%
+        filter(ensembl_transcript_id == "ENST00000342301") %>%
+        dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
+        arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
 ```
@@ -2067,11 +2127,11 @@ A POU domain contains a POU-specific domain and a Homeodomain, which is how it s
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
-  mutate(start = as.numeric(start)) %>%
-  mutate(stop = as.numeric(stop)) %>%
-  filter(ensembl_transcript_id == "ENST00000403681") %>%
-  dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
-  arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
+        mutate(start = as.numeric(start)) %>%
+        mutate(stop = as.numeric(stop)) %>%
+        filter(ensembl_transcript_id == "ENST00000403681") %>%
+        dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
+        arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
 ```
@@ -2080,11 +2140,11 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
-  mutate(start = as.numeric(start)) %>%
-  mutate(stop = as.numeric(stop)) %>%
-  filter(ensembl_transcript_id == "ENST00000431969") %>%
-  dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
-  arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
+        mutate(start = as.numeric(start)) %>%
+        mutate(stop = as.numeric(stop)) %>%
+        filter(ensembl_transcript_id == "ENST00000431969") %>%
+        dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
+        arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
 ```
@@ -2093,11 +2153,11 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
-  mutate(start = as.numeric(start)) %>%
-  mutate(stop = as.numeric(stop)) %>%
-  filter(ensembl_transcript_id == "ENST00000490107") %>%
-  dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
-  arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
+        mutate(start = as.numeric(start)) %>%
+        mutate(stop = as.numeric(stop)) %>%
+        filter(ensembl_transcript_id == "ENST00000490107") %>%
+        dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
+        arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
 ```
@@ -2108,11 +2168,11 @@ A MYND domain is incorporated into a SET domain here.
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
-  mutate(start = as.numeric(start)) %>%
-  mutate(stop = as.numeric(stop)) %>%
-  filter(ensembl_transcript_id == "ENST00000421033") %>%
-  dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
-  arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
+        mutate(start = as.numeric(start)) %>%
+        mutate(stop = as.numeric(stop)) %>%
+        filter(ensembl_transcript_id == "ENST00000421033") %>%
+        dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
+        arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
 ```
@@ -2123,11 +2183,11 @@ Here we have two BED zinc finger matches overlapping C2H2 ZF matches. This is ca
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
-  mutate(start = as.numeric(start)) %>%
-  mutate(stop = as.numeric(stop)) %>%
-  filter(ensembl_transcript_id == "ENST00000338343") %>%
-  dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
-  arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
+        mutate(start = as.numeric(start)) %>%
+        mutate(stop = as.numeric(stop)) %>%
+        filter(ensembl_transcript_id == "ENST00000338343") %>%
+        dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
+        arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
 ```
@@ -2136,11 +2196,11 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
-  mutate(start = as.numeric(start)) %>%
-  mutate(stop = as.numeric(stop)) %>%
-  filter(ensembl_transcript_id == "ENST00000389506") %>%
-  dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
-  arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
+        mutate(start = as.numeric(start)) %>%
+        mutate(stop = as.numeric(stop)) %>%
+        filter(ensembl_transcript_id == "ENST00000389506") %>%
+        dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
+        arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
 ```
@@ -2149,11 +2209,11 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
-  mutate(start = as.numeric(start)) %>%
-  mutate(stop = as.numeric(stop)) %>%
-  filter(ensembl_transcript_id == "ENST00000007699") %>%
-  dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ENTRY_TYPE, ipr_ancestor, ipr_status, ipr_description, start, stop) %>%
-  arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
+        mutate(start = as.numeric(start)) %>%
+        mutate(stop = as.numeric(stop)) %>%
+        filter(ensembl_transcript_id == "ENST00000007699") %>%
+        dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ENTRY_TYPE, ipr_ancestor, ipr_status, ipr_description, start, stop) %>%
+        arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
 ```
@@ -2162,11 +2222,11 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
-  mutate(start = as.numeric(start)) %>%
-  mutate(stop = as.numeric(stop)) %>%
-  filter(ensembl_transcript_id == "ENST00000219905") %>%
-  dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
-  arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
+        mutate(start = as.numeric(start)) %>%
+        mutate(stop = as.numeric(stop)) %>%
+        filter(ensembl_transcript_id == "ENST00000219905") %>%
+        dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
+        arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
 ```
@@ -2175,11 +2235,11 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
-  mutate(start = as.numeric(start)) %>%
-  mutate(stop = as.numeric(stop)) %>%
-  filter(ensembl_transcript_id == "ENST00000434928") %>%
-  dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
-  arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
+        mutate(start = as.numeric(start)) %>%
+        mutate(stop = as.numeric(stop)) %>%
+        filter(ensembl_transcript_id == "ENST00000434928") %>%
+        dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
+        arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
 ```
@@ -2188,11 +2248,11 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
-  mutate(start = as.numeric(start)) %>%
-  mutate(stop = as.numeric(stop)) %>%
-  filter(ensembl_transcript_id == "ENST00000220888") %>%
-  dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
-  arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
+        mutate(start = as.numeric(start)) %>%
+        mutate(stop = as.numeric(stop)) %>%
+        filter(ensembl_transcript_id == "ENST00000220888") %>%
+        dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
+        arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
 ```
@@ -2201,11 +2261,11 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
-  mutate(start = as.numeric(start)) %>%
-  mutate(stop = as.numeric(stop)) %>%
-  filter(ensembl_transcript_id == "ENST00000228641") %>%
-  dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
-  arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
+        mutate(start = as.numeric(start)) %>%
+        mutate(stop = as.numeric(stop)) %>%
+        filter(ensembl_transcript_id == "ENST00000228641") %>%
+        dplyr::select(ensembl_gene_id, ensembl_transcript_id, source_db, ipr_accession, ipr_status, ipr_description, start, stop) %>%
+        arrange(ensembl_gene_id, ensembl_transcript_id, start, stop)) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "100%")
 ```
@@ -2306,8 +2366,10 @@ ips_domains_ipr_ens99_final_strat %>%
 Check that no matches have empty comments:
 
 ```{r, include=T}
-ips_domains_ipr_ens99_final_strat %>%
-  filter((category_comment == "") | (is.na(category_comment)))
+kable(ips_domains_ipr_ens99_final_strat %>%
+        filter((category_comment == "") | (is.na(category_comment)))) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
 ```
 
 So, all matches have proper category values and non-empty comments associated with them.

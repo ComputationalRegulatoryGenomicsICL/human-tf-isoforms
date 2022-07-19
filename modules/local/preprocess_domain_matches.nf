@@ -17,37 +17,38 @@ process PREPROCESS_DOMAIN_MATCHES {
 
     input:
     path rmd
-    path humantfs 
-    path interpro_entries
-    path ensembl99_all
-    path gene_biotype_table
-    path protein_fasta_tfs
+    path ips_domains_ipr_ens99
     path ipr_hierarchy_yaml
-    path draft_classification_table
-    path domain_classification_wb
-    path ensg_enst_tsl
-    path ens99_pep
-    path nondbd_annot
+    path humantfs_dbd_ids
+    path ips_domains_ipr_ens99_iprs
+    path dbd_ipr_humantfs
+    path ensg_enst_ensp
+
+    // path humantfs 
+    // path interpro_entries
+    // path ensembl99_all
+    // path gene_biotype_table
+    // path protein_fasta_tfs
+    // path draft_classification_table
+    // path domain_classification_wb
+    // path ensg_enst_tsl
+    // path ens99_pep
+    // path nondbd_annot
 
     output:
-    path "*.tsv" , emit: tables, optional: true
-    path "*.pdf" , emit: panels, optional: true
+    path "*.tsv" , emit: tables
+    path "*.pdf" , emit: panels
     path "*.html", emit: knitted_html
 
     script:
     """
     render_rmd.R \\
         ${rmd} \\
-        ${humantfs} \\
-        ${interpro_entries} \\
-        ${ensembl99_all} \\
-        ${gene_biotype_table} \\
-        ${protein_fasta_tfs} \\
+        ${ips_domains_ipr_ens99} \\
         ${ipr_hierarchy_yaml} \\
-        ${draft_classification_table} \\
-        ${domain_classification_wb} \\
-        ${ensg_enst_tsl} \\
-        ${ens99_pep} \\
-        ${nondbd_annot}
+        ${humantfs_dbd_ids} \\
+        ${ips_domains_ipr_ens99_iprs} \\
+        ${dbd_ipr_humantfs} \\
+        ${ensg_enst_ensp}
     """
 }

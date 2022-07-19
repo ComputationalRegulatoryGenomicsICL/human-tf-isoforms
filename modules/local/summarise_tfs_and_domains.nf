@@ -19,14 +19,16 @@ process SUMMARISE_TFS_AND_DOMAINS {
     path rmd
     path humantfs 
     path interpro_entries
-    path ensembl99_all
+    path ensg_enst_ensp
     path gene_biotype_table
     path protein_fasta_tfs
 
     output:
-    path "*.tsv" , emit: tables, optional: true
-    path "*.pdf" , emit: panels, optional: true
-    path "*.html", emit: knitted_html
+    path "ips_domains_ipr_ens99.tsv"     , emit: ips_domains_ipr_ens99
+    path "humantfs_dbd_ids.tsv"          , emit: humantfs_dbd_ids
+    path "ips_domains_ipr_ens99_iprs.tsv", emit: ips_domains_ipr_ens99_iprs
+    path "dbd_ipr_humantfs.tsv"          , emit: dbd_ipr_humantfs
+    path "*.html"                        , emit: knitted_html
 
     script:
     """
@@ -34,7 +36,7 @@ process SUMMARISE_TFS_AND_DOMAINS {
         ${rmd} \\
         ${humantfs} \\
         ${interpro_entries} \\
-        ${ensembl99_all} \\
+        ${ensg_enst_ensp} \\
         ${gene_biotype_table} \\
         ${protein_fasta_tfs}
     """
