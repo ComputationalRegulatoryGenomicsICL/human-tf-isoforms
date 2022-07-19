@@ -30,9 +30,9 @@ process SELECT_TF_ISOFORMS {
     path nondbd_annot
 
     output:
-    path "*.tsv"          , emit: tables
-    path "*.pdf"          , emit: plots
-    path "*.html"         , emit: knitted_html
+    path "*.tsv" , emit: tables, optional: true
+    path "*.pdf" , emit: panels, optional: true
+    path "*.html", emit: knitted_html
 
     script:
     """

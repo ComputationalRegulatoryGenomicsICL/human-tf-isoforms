@@ -24,8 +24,8 @@ process SUMMARISE_TFS_AND_DOMAINS {
     path protein_fasta_tfs
 
     output:
-    path "*.tsv" , emit: tables
-    path "*.pdf" , emit: plots
+    path "*.tsv" , emit: tables, optional: true
+    path "*.pdf" , emit: panels, optional: true
     path "*.html", emit: knitted_html
 
     script:

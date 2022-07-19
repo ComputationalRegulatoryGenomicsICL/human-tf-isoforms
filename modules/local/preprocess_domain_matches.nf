@@ -30,9 +30,9 @@ process PREPROCESS_DOMAIN_MATCHES {
     path nondbd_annot
 
     output:
-    path "*.tsv"          , emit: tables
-    path "*.pdf"          , emit: plots
-    path "*.html"         , emit: knitted_html
+    path "*.tsv" , emit: tables, optional: true
+    path "*.pdf" , emit: panels, optional: true
+    path "*.html", emit: knitted_html
 
     script:
     """
