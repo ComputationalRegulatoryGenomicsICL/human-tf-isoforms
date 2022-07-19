@@ -52,6 +52,7 @@ humantfs_dbd_ids_name = args[12]
 ips_domains_ipr_ens99_iprs_name = args[13]
 dbd_ipr_humantfs_name = args[14]
 ensg_enst_ensp_name = args[15]
+tfs_name = args[16]
 
 #humantfs_name = args[9]
 #ensembl99_all_name = args[11]
@@ -467,10 +468,11 @@ tr.with.overlapping.domains.count = ips_domains_ipr_ens99_int_specific_retained_
   length()
 ```
 
-Load `ensg_enst_ensp`:
+Load `ensg_enst_ensp` and `tfs`:
 
 ```{r, include=T}
 ensg_enst_ensp = read.delim(ensg_enst_ensp_name)
+tfs = read.delim(tfs_name)
 ```
 
 We have `r nrow(ips_domains_ipr_ens99_int_specific_retained_overlapping.dom)` overlapping specific domains (so they are not in hierarchical relationship in InterPro)! They are located in `r tr.with.overlapping.domains.count` transcripts out of the total number of transcripts (`r ensg_enst_ensp %>% filter(ensembl_gene_id %in% tfs$Ensembl.ID) %>% pull(ensembl_transcript_id) %>% unique() %>% length()`). Let us retain them at present, as they can have different meaning. For example, 

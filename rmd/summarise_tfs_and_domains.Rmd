@@ -345,4 +345,10 @@ write.table(dbd_ipr_humantfs,
             quote = F,
             sep = "\t",
             row.names = F)
+
+write.table(tfs,
+            file = "tfs.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
 ```

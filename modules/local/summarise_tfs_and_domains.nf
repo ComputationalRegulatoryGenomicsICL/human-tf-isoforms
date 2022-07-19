@@ -28,6 +28,7 @@ process SUMMARISE_TFS_AND_DOMAINS {
     path "humantfs_dbd_ids.tsv"          , emit: humantfs_dbd_ids
     path "ips_domains_ipr_ens99_iprs.tsv", emit: ips_domains_ipr_ens99_iprs
     path "dbd_ipr_humantfs.tsv"          , emit: dbd_ipr_humantfs
+    path "tfs.tsv"                       , emit: tfs
     path "*.html"                        , emit: knitted_html
 
     script:

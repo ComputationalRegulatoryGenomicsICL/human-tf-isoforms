@@ -24,6 +24,7 @@ process PREPROCESS_DOMAIN_MATCHES {
     path ips_domains_ipr_ens99_iprs
     path dbd_ipr_humantfs
     path ensg_enst_ensp
+    path tfs
 
     // path humantfs 
     // path ensembl99_all
@@ -50,6 +51,7 @@ process PREPROCESS_DOMAIN_MATCHES {
         ${humantfs_dbd_ids} \\
         ${ips_domains_ipr_ens99_iprs} \\
         ${dbd_ipr_humantfs} \\
-        ${ensg_enst_ensp}
+        ${ensg_enst_ensp} \\
+        ${tfs}
     """
 }
