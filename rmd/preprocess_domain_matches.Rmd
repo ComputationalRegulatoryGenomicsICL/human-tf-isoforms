@@ -96,7 +96,7 @@ The numbers of matches (InterPro entries) of different types in TF protein isofo
 interpro_entries = read.delim(interpro_entries_name)
 
 ips_domains_ipr_ens99 %>%
-  left_join(interpro_entries, by = c("ipr_accession" = "ENTRY_AC")) %>%
+  dplyr::left_join(interpro_entries, by = c("ipr_accession" = "ENTRY_AC")) %>%
   group_by(ensembl_transcript_id) %>%
   dplyr::select(ipr_accession, ENTRY_TYPE) %>%
   distinct() %>%
