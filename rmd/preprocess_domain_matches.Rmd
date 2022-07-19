@@ -94,6 +94,6 @@ The numbers of matches (InterPro entries) of different types in TF protein isofo
 
 ```{r, include=T}
 interpro_entries = read.delim(interpro_entries_name)
-head(interpro_entries, 10)}
+head(interpro_entries, 10)
 class(interpro_entries)
 ```
