@@ -45,15 +45,15 @@ Read args:
 ```{r, include=T}
 args = commandArgs()
 
-ips_domains_ipr_ens99 = args[9]
-ipr_hierarchy_yaml_name = args[10]
-humantfs_dbd_ids_name = args[11]
-ips_domains_ipr_ens99_iprs_name = args[12]
-dbd_ipr_humantfs_name = args[13]
-ensg_enst_ensp_name = args[14]
+interpro_entries_name = args[9]
+ips_domains_ipr_ens99 = args[10]
+ipr_hierarchy_yaml_name = args[11]
+humantfs_dbd_ids_name = args[12]
+ips_domains_ipr_ens99_iprs_name = args[13]
+dbd_ipr_humantfs_name = args[14]
+ensg_enst_ensp_name = args[15]
 
 #humantfs_name = args[9]
-#interpro_entries_name = args[10]
 #ensembl99_all_name = args[11]
 #gene_biotype_table_name = args[12]
 #protein_fasta_tfs_name = args[13]
@@ -93,6 +93,8 @@ Hence, we will need to hierarchically filter InterPro entries, prioritizing doma
 The numbers of matches (InterPro entries) of different types in TF protein isoforms:
 
 ```{r, include=T, fig.width=10}
+interpro_entries = read.delim(interpro_entries_name)
+
 ips_domains_ipr_ens99 %>%
   left_join(interpro_entries, by = c("ipr_accession" = "ENTRY_AC")) %>%
   group_by(ensembl_transcript_id) %>%

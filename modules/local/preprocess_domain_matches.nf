@@ -17,6 +17,7 @@ process PREPROCESS_DOMAIN_MATCHES {
 
     input:
     path rmd
+    path interpro_entries
     path ips_domains_ipr_ens99
     path ipr_hierarchy_yaml
     path humantfs_dbd_ids
@@ -25,7 +26,6 @@ process PREPROCESS_DOMAIN_MATCHES {
     path ensg_enst_ensp
 
     // path humantfs 
-    // path interpro_entries
     // path ensembl99_all
     // path gene_biotype_table
     // path protein_fasta_tfs
@@ -44,6 +44,7 @@ process PREPROCESS_DOMAIN_MATCHES {
     """
     render_rmd.R \\
         ${rmd} \\
+        ${interpro_entries} \\
         ${ips_domains_ipr_ens99} \\
         ${ipr_hierarchy_yaml} \\
         ${humantfs_dbd_ids} \\
