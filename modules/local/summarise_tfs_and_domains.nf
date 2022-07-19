@@ -21,6 +21,7 @@ process SUMMARISE_TFS_AND_DOMAINS {
     path interpro_entries
     path ensembl99_all
     path gene_biotype_table
+    path protein_fasta_tfs
 
     output:
     path "*.tsv" , emit: tables
