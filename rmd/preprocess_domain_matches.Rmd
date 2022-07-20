@@ -2119,7 +2119,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
 
 A POU domain contains a POU-specific domain and a Homeodomain, which is how it should be. But later, to avoid redundancy, we will need to remove the POU domain and retain only the POU-specific domain and the Homeodomain that the POU domain overlaps.
 
-__3) HMGA2:__
+3) __HMGA2:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2132,7 +2132,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-__4) TBX19:__
+4) __TBX19:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2145,7 +2145,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-__5) SMYD3:__
+5) __SMYD3:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2160,7 +2160,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
 
 A MYND domain is incorporated into a SET domain here.
 
-__6) ZNF415:__
+6) __ZNF415:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2175,7 +2175,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
 
 Here we have two BED zinc finger matches overlapping C2H2 ZF matches. This is caused by the problematic signature SM00614 from IPR003656. We will exclude this signature later on.
 
-__7) FBXL19:__
+7) __FBXL19:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2188,7 +2188,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-__8) KMT2A:__
+8) __KMT2A:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2201,7 +2201,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-__9) YBX2:__
+9) __YBX2:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2214,7 +2214,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-__10) MGA:__
+10) __MGA:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2227,7 +2227,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-__11) TP63:__
+11) __TP63:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2240,7 +2240,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-__12) TRPS1:__
+12) __TRPS1:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2253,7 +2253,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-__13) MYF6:__
+13) __MYF6:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
