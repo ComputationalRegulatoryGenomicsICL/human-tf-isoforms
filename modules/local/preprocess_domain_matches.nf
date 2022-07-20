@@ -26,20 +26,11 @@ process PREPROCESS_DOMAIN_MATCHES {
     path ensg_enst_ensp
     path tfs
     path draft_classification_table
-
-    // path humantfs 
-    // path ensembl99_all
-    // path gene_biotype_table
-    // path protein_fasta_tfs
-    // path draft_classification_table
-    // path domain_classification_wb
-    // path ensg_enst_tsl
-    // path ens99_pep
-    // path nondbd_annot
+    path domain_classification_wb
 
     output:
-    //path "*.tsv" , emit: tables
-    //path "*.pdf" , emit: panels
+    path "*.tsv" , emit: tables, optional: true // amend
+    path "*.pdf" , emit: panels, optional: true // amend
     path "*.html", emit: knitted_html
 
     script:
@@ -54,6 +45,7 @@ process PREPROCESS_DOMAIN_MATCHES {
         ${dbd_ipr_humantfs} \\
         ${ensg_enst_ensp} \\
         ${tfs} \\
-        ${draft_classification_table}
+        ${draft_classification_table} \\
+        ${domain_classification_wb}
     """
 }

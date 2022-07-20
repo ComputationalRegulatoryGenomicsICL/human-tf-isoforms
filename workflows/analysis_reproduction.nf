@@ -45,7 +45,8 @@ workflow NF_ANALYSIS_REPRODUCTION {
         SUMMARISE_TFS_AND_DOMAINS.out.dbd_ipr_humantfs,
         ensg_enst_ensp,
         SUMMARISE_TFS_AND_DOMAINS.out.tfs,
-        draft_classification_table
+        draft_classification_table,
+        domain_classification_wb
     )
 
     // DOMAIN_ANALYSIS( rmd_domain_analysis,

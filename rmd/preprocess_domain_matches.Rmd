@@ -54,15 +54,7 @@ dbd_ipr_humantfs_name = args[14]
 ensg_enst_ensp_name = args[15]
 tfs_name = args[16]
 draft_classification_table_name = args[17]
-
-#humantfs_name = args[9]
-#ensembl99_all_name = args[11]
-#gene_biotype_table_name = args[12]
-#protein_fasta_tfs_name = args[13]
-#domain_classification_wb_name = args[16]
-#ensg_enst_tsl_name = args[17]
-#ens99_pep_name = args[18]
-#nondbd.annot_name = args[19]
+domain_classification_wb_name = args[18]
 ```
 
 # Prepare for the filtering of matches in TF protein products from Ensembl v99
