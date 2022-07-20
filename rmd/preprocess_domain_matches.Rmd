@@ -364,8 +364,8 @@ ips_domains_ipr_ens99_int_specific_retained_iprs = ips_domains_ipr_ens99_int_spe
 Load `humantfs_dbd_ids` and `ips_domains_ipr_ens99_iprs`:
 
 ```{r, include=T}
-humantfs_dbd_ids = read.delim(humantfs_dbd_ids_name)
-ips_domains_ipr_ens99_iprs = read.delim(ips_domains_ipr_ens99_iprs_name)
+humantfs_dbd_ids = as.character(read.delim(humantfs_dbd_ids_name)$x)
+ips_domains_ipr_ens99_iprs = as.character(read.delim(ips_domains_ipr_ens99_iprs_name)$x)
 ```
 
 Now we have `r ips_domains_ipr_ens99_int_specific_retained_iprs %>% length()` unique specific InterPro entries out of `r ips_domains_ipr_ens99_iprs %>% length()` we had after scanning (specific and general together). So, almost all matches are specific. `r length(ips_domains_ipr_ens99_int_specific_retained_iprs[ips_domains_ipr_ens99_int_specific_retained_iprs %in% humantfs_dbd_ids])` of these entries are from HumanTFs. The following `r length(ips_domains_ipr_ens99_iprs[ips_domains_ipr_ens99_iprs %in% humantfs_dbd_ids]) - length(ips_domains_ipr_ens99_int_specific_retained_iprs[ips_domains_ipr_ens99_int_specific_retained_iprs %in% humantfs_dbd_ids])` InterPro entries from HumanTFs are general:
@@ -1064,19 +1064,19 @@ kable(ips_domains_ipr_ens99_int_specific_retained2_overlapping.sf_pair.table) %>
   
 So, there are only `r nrow(ips_domains_ipr_ens99_int_specific_retained2_overlapping.sf_pair.table)` different pairs of InterPro entries. Let us decide what to do in each case: either select a more specific-looking entry (according to InterPro descriptions) or use another criterion, according to literature or other databases:
 
-    1) IPR011011 / IPR036427 (Zinc finger, FYVE/PHD-type / Bromodomain-like superfamily): According to UniProt, a zinc-finger domain is indeed embedded into a bromodomain  ([SP140L](https://www.uniprot.org/uniprot/Q9H930#structure)). Consequently, I will keep both Homologous Superfamily entries.
+1) __IPR011011 / IPR036427__ (Zinc finger, FYVE/PHD-type / Bromodomain-like superfamily): According to UniProt, a zinc-finger domain is indeed embedded into a bromodomain  ([SP140L](https://www.uniprot.org/uniprot/Q9H930#structure)). Consequently, I will keep both Homologous Superfamily entries.
 
-    2) IPR015943 / IPR036322 (WD40/YVTN repeat-like-containing domain superfamily / WD40-repeat-containing domain superfamily): According to the descriptions in InterPro ([IPR015943](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR015943/) and [IPR036322](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR036322/)), IPR036322 can be more specific, so let us retain it.
+2) __IPR015943 / IPR036322__ (WD40/YVTN repeat-like-containing domain superfamily / WD40-repeat-containing domain superfamily): According to the descriptions in InterPro ([IPR015943](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR015943/) and [IPR036322](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR036322/)), IPR036322 can be more specific, so let us retain it.
 
-    3) IPR036388 / IPR036390 (Winged helix-like DNA-binding domain superfamily / Winged helix DNA-binding domain superfamily): Retain a more specific-looking entry IPR036390 (it is not clear from the InterPro descriptions, [IPR036388](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR036388/) and [IPR036390](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR036390/), which one could be more specific).
+3) __IPR036388 / IPR036390__ (Winged helix-like DNA-binding domain superfamily / Winged helix DNA-binding domain superfamily): Retain a more specific-looking entry IPR036390 (it is not clear from the InterPro descriptions, [IPR036388](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR036388/) and [IPR036390](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR036390/), which one could be more specific).
 
-    4) IPR008967 / IPR012346 (p53-like transcription factor, DNA-binding / p53/RUNT-type transcription factor, DNA-binding domain superfamily): Retain a more specific-looking entry IPR012346 (the other entry, IPR008967, takes part in some other pairs a well).
+4) __IPR008967 / IPR012346__ (p53-like transcription factor, DNA-binding / p53/RUNT-type transcription factor, DNA-binding domain superfamily): Retain a more specific-looking entry IPR012346 (the other entry, IPR008967, takes part in some other pairs a well).
 
-    5) IPR008967 / IPR037095 (p53-like transcription factor, DNA-binding / RBP-J/Cbf11/Cbf12, DNA binding domain superfamily): Retain a more specific-looking entry IPR037095.
+5) __IPR008967 / IPR037095__ (p53-like transcription factor, DNA-binding / RBP-J/Cbf11/Cbf12, DNA binding domain superfamily): Retain a more specific-looking entry IPR037095.
 
-    6) IPR013783 / IPR014756 (Immunoglobulin-like fold / Immunoglobulin E-set): According to the corresponding descriptions in InterPro ([IPR013783](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR013783/) and [IPR014756](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR014756/)), IPR014756 can be more specific, so let us retain it.
+6) __IPR013783 / IPR014756__ (Immunoglobulin-like fold / Immunoglobulin E-set): According to the corresponding descriptions in InterPro ([IPR013783](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR013783/) and [IPR014756](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR014756/)), IPR014756 can be more specific, so let us retain it.
 
-    7) IPR011989 / IPR016024 (Armadillo-like helical / Armadillo-type fold): From InterPro descriptions ([IPR011989](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR011989/) and [IPR016024](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR016024/)) it is not clear which entry is more specific. Let us use IPR016024 (Armadillo-type fold) as it is given by UniProt ([TERB1](https://www.uniprot.org/uniprot/Q8NA31#structure)) for a protein entry corresponding to a transcript that contains both of these entries.
+7) __IPR011989 / IPR016024__ (Armadillo-like helical / Armadillo-type fold): From InterPro descriptions ([IPR011989](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR011989/) and [IPR016024](https://www.ebi.ac.uk/interpro/entry/InterPro/IPR016024/)) it is not clear which entry is more specific. Let us use IPR016024 (Armadillo-type fold) as it is given by UniProt ([TERB1](https://www.uniprot.org/uniprot/Q8NA31#structure)) for a protein entry corresponding to a transcript that contains both of these entries.
 
 Now let us filter out the entries that we do not retain (we make them "general" in particular transcripts, where they overlap with Homologous Superfamily entries that we keep):
 
@@ -1623,10 +1623,6 @@ ips_domains_ipr_ens99 %>%
     ylim(c(0, 30000)) +
     theme_classic() +
     theme(legend.position = "none")
-
-ips_domains_ipr_ens99_iprs = ips_domains_ipr_ens99 %>% 
-  pull(ipr_accession) %>% 
-  unique()
 ```
 
 So, signatures from Hamap and TIGRFAM disappeared. The numbers of signatures from Gene3D, PANTHER, RIRSF, PRINTS, and SUPERFAMILY decreased dramatically. The numbers of signatures from the other databases (CDD, Pfam, ProSitePatterns, ProSiteProfiles, and SMART) also lowered but not as much.
@@ -2083,17 +2079,19 @@ ips_domains_ipr_ens99_int_specific_retained5_prints.ok = ips_domains_ipr_ens99_i
 So `r nrow(ips_domains_ipr_ens99_int_specific_retained5_prints.ok_dom.general2specific)` general domain matches do not intersect their child (more specific) matches. Hence, we qualified these general matches as specific. Here is the list of the InterPro accessions of these matches:
 
 ```{r, include=T}
-ips_domains_ipr_ens99_int_specific_retained5_prints.ok_dom.general2specific %>%
-  dplyr::select(ipr_accession, ipr_description) %>%
-  distinct() %>%
-  arrange(ipr_accession)
+kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok_dom.general2specific %>%
+        dplyr::select(ipr_accession, ipr_description) %>%
+        distinct() %>%
+        arrange(ipr_accession)) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
 ```
 
 # Examples of domain architectures in TFs
 
 Some examples of domain architectures in TF isoforms are shown below:
 
-    1) ZNF248:
+1) __ZNF248:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2106,7 +2104,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-    2) POU2F2:
+2) __POU2F2:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2121,7 +2119,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
 
 A POU domain contains a POU-specific domain and a Homeodomain, which is how it should be. But later, to avoid redundancy, we will need to remove the POU domain and retain only the POU-specific domain and the Homeodomain that the POU domain overlaps.
 
-    3) HMGA2:
+__3) HMGA2:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2134,7 +2132,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-    4) TBX19:
+__4) TBX19:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2147,7 +2145,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-    5) SMYD3:
+__5) SMYD3:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2162,7 +2160,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
 
 A MYND domain is incorporated into a SET domain here.
 
-    6) ZNF415:
+__6) ZNF415:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2177,7 +2175,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
 
 Here we have two BED zinc finger matches overlapping C2H2 ZF matches. This is caused by the problematic signature SM00614 from IPR003656. We will exclude this signature later on.
 
-    7) FBXL19:
+__7) FBXL19:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2190,7 +2188,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-    8) KMT2A:
+__8) KMT2A:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2203,7 +2201,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-    9) YBX2:
+__9) YBX2:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2216,7 +2214,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-    10) MGA:
+__10) MGA:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2229,7 +2227,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-    11) TP63:
+__11) TP63:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2242,7 +2240,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-    12) TRPS1:
+__12) TRPS1:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2255,7 +2253,7 @@ kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   scroll_box(width = "100%")
 ```
 
-    13) MYF6:
+__13) MYF6:__
 
 ```{r, include=T}
 kable(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
@@ -2323,15 +2321,15 @@ ips_domains_ipr_ens99_int_specific_retained5_prints.ok = ips_domains_ipr_ens99_i
 
 Next, I manually curated the preliminary binary classification (Non-DBD vs. everything else) using domain descriptions from InterPro, descriptions of individual signatures and scanning results in TF isoforms. I classified the domains into the following categories:
 
-    - "DBD": DNA-binding domain, according to its InterPro description;
+- __"DBD"__: DNA-binding domain, according to its InterPro description;
 
-    - "Other": domain with a function different from DNA-binding, according to the InterPro description of the domain;
+- __"Other"__: domain with a function different from DNA-binding, according to the InterPro description of the domain;
 
-    - "Non-DBD": category formed automatically in the step above;
+- __"Non-DBD"__: category formed automatically in the step above;
 
-    - "Unknown": domain with an unknown function, as stated in its InterPro description;
+- __"Unknown"__: domain with an unknown function, as stated in its InterPro description;
 
-    - "Unclear": domain whose function is not mentioned in its InterPro description.
+- __"Unclear"__: domain whose function is not mentioned in its InterPro description.
 
 I saved the resulting table into `domain_table_manually_annotated.xlsx` which is used below.
 
@@ -2355,10 +2353,12 @@ ips_domains_ipr_ens99_final_strat = ips_domains_ipr_ens99_int_specific_retained5
 Check that no matches lack an associated domain type:
 
 ```{r, include=T}
-ips_domains_ipr_ens99_final_strat %>%
-  filter(!domain_type %in% c("DBD", "Non-DBD", "Other", "Unclear", "Unknown")) %>%
-  dplyr::select(ensembl_transcript_id, ipr_accession, domain_type) %>%
-  nrow()
+kable(ips_domains_ipr_ens99_final_strat %>%
+        filter(!domain_type %in% c("DBD", "Non-DBD", "Other", "Unclear", "Unknown")) %>%
+        dplyr::select(ensembl_transcript_id, ipr_accession, domain_type) %>%
+        nrow()) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
 ```
 
 Check that no matches have empty comments:

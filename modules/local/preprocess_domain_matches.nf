@@ -29,8 +29,8 @@ process PREPROCESS_DOMAIN_MATCHES {
     path domain_classification_wb
 
     output:
-    path "*.tsv" , emit: tables, optional: true // amend
-    path "*.pdf" , emit: panels, optional: true // amend
+    path "*.tsv" , emit: tables
+    path "*.pdf" , emit: panels, optional: true
     path "*.html", emit: knitted_html
 
     script:
