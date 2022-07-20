@@ -2321,15 +2321,15 @@ ips_domains_ipr_ens99_int_specific_retained5_prints.ok = ips_domains_ipr_ens99_i
 
 Next, I manually curated the preliminary binary classification (Non-DBD vs. everything else) using domain descriptions from InterPro, descriptions of individual signatures and scanning results in TF isoforms. I classified the domains into the following categories:
 
-- __"DBD"__: DNA-binding domain, according to its InterPro description;
+* __"DBD"__: DNA-binding domain, according to its InterPro description;
 
-- __"Other"__: domain with a function different from DNA-binding, according to the InterPro description of the domain;
+* __"Other"__: domain with a function different from DNA-binding, according to the InterPro description of the domain;
 
-- __"Non-DBD"__: category formed automatically in the step above;
+* __"Non-DBD"__: category formed automatically in the step above;
 
-- __"Unknown"__: domain with an unknown function, as stated in its InterPro description;
+* __"Unknown"__: domain with an unknown function, as stated in its InterPro description;
 
-- __"Unclear"__: domain whose function is not mentioned in its InterPro description.
+* __"Unclear"__: domain whose function is not mentioned in its InterPro description.
 
 I saved the resulting table into `domain_table_manually_annotated.xlsx` which is used below.
 
