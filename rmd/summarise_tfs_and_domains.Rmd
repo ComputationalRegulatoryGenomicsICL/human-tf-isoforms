@@ -1,5 +1,5 @@
 ---
-title: "Analysis of domains in alternative TF isoforms"
+title: "Summarise human TFs and their domains"
 author: "Sviatoslav Sidorov"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
@@ -319,7 +319,7 @@ kable(dbd_ipr_humantfs[!dbd_ipr_humantfs$ENTRY_AC %in% ips_domains_ipr_ens99_ipr
   scroll_box(width = "100%")
 ```
 
-Write down tables to use it in other notebooks:
+Write down tables for downstream modules:
 
 ```{r, include=T}
 write.table(ips_domains_ipr_ens99,

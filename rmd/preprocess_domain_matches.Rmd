@@ -1,5 +1,5 @@
 ---
-title: "Analysis of domains in alternative TF isoforms"
+title: "Preprocess domain matches in TF isoforms"
 author: "Sviatoslav Sidorov"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
@@ -2687,3 +2687,19 @@ Overall, there are `r ips_domains_ipr_ens99_final_strat %>% filter(domain_type =
 The number of specific DBD-related InterPro entries (`r ips_domains_ipr_ens99_final_strat %>% filter(ipr_status == "specific") %>% filter(domain_type == "DBD") %>% pull(ipr_accession) %>% unique() %>% length()`) is way greater than the number of general TF families from HumanTFs (`r ips_domains_ipr_ens99_final_strat %>% left_join(tfs, by = c("ensembl_gene_id" = "Ensembl.ID")) %>% dplyr::select(-c(names(tfs)[(names(tfs) != "DBD") & (names(tfs) != "Ensembl.ID")])) %>% pull(DBD) %>% unique() %>% length()`). This is explained by the fact that there are some noncanonical DBDs, not used to form families, and also different subtypes of the same DBD.
 
 Indeed, a part of these specific DBD-related entries have ancestor (more general) InterPro entries, but most of them do not: from `r ips_domains_ipr_ens99_final_strat %>% filter(ipr_status == "specific") %>% filter(domain_type == "DBD") %>% pull(ipr_accession) %>% unique() %>% length()` specific DBD-related entries, `r ips_domains_ipr_ens99_final_strat %>%  filter(ipr_status == "specific") %>% filter(domain_type == "DBD") %>% filter(is.na(ipr_ancestor)) %>% pull(ipr_accession) %>% unique() %>% length()` do not have any ancestor entries. Consequently, the most part of the DBD types should represent subfamilies of the general TF families or be non-canonical.
+
+Write down tables for downstream modules:
+
+```{r, include=T}
+write.table(ips_domains_ipr_ens99_final_strat,
+            file = "ips_domains_ipr_ens99_final_strat.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
+
+write.table(ips_domains_ipr_ens99_int_specific_retained,
+            file = "ips_domains_ipr_ens99_int_specific_retained.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
+```

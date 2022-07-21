@@ -1,13 +1,13 @@
 include { SUMMARISE_TFS_AND_DOMAINS } from '../modules/local/summarise_tfs_and_domains.nf'
 include { PREPROCESS_DOMAIN_MATCHES } from '../modules/local/preprocess_domain_matches.nf'
-include { SELECT_TF_ISOFORMS } from '../modules/local/select_tf_isoforms.nf'
+include { SELECT_DOMAINS_AND_TF_ISOFORMS } from '../modules/local/select_domains_and_tf_isoforms.nf'
 include { DOMAIN_ANALYSIS } from '../modules/local/domain_analysis.nf'
 include { ANNOTATE_NONDBDS } from '../modules/local/annotate_nondbds.nf'
 
 // R Markdown files
 rmd_summarise_tfs_and_domains = file( "./rmd/summarise_tfs_and_domains.Rmd" )
 rmd_preprocess_domain_matches = file( "./rmd/preprocess_domain_matches.Rmd" )
-rmd_select_tf_isoforms = file( "./rmd/select_tf_isoforms.Rmd" )
+rmd_select_domains_and_tf_isoforms = file( "./rmd/select_domains_and_tf_isoforms.Rmd" )
 rmd_domain_analysis = file( "./rmd/domain_analysis.Rmd" )
 rmd_annotate_nondbds = file( "./rmd/annotate_nondbds.Rmd" )
 
@@ -23,6 +23,8 @@ domain_classification_wb = file( "./input/domain_classification/domain_table_man
 ensg_enst_tsl = file( "./input/ensembl99/ensg_enst_tsl_99.tsv" )
 ens99_pep = file( "./input/ensembl99/Homo_sapiens.GRCh38.pep.all.99.tsv.gz" )
 nondbd_annot = file( "./input/domain_classification/Other_domains_manually_curated_filled.tsv" )
+protein_fasta_tfs_99 = file( "./intput/interpro_scans/protein_fasta_tfs_99.fa" )
+
 
 workflow NF_ANALYSIS_REPRODUCTION {
 
@@ -47,6 +49,17 @@ workflow NF_ANALYSIS_REPRODUCTION {
         SUMMARISE_TFS_AND_DOMAINS.out.tfs,
         draft_classification_table,
         domain_classification_wb
+    )
+
+    SELECT_DOMAINS_AND_TF_ISOFORMS (
+        rmd_select_domains_and_tf_isoforms,
+        ensg_enst_ensp,
+        SUMMARISE_TFS_AND_DOMAINS.out.tfs,
+        PREPROCESS_DOMAIN_MATCHES.out.ips_domains_ipr_ens99_final_strat,
+        protein_fasta_tfs_99,
+        PREPROCESS_DOMAIN_MATCHES.out.ips_domains_ipr_ens99_int_specific_retained,
+        domain_classification_wb,
+        ensg_enst_tsl
     )
 
     // DOMAIN_ANALYSIS( rmd_domain_analysis,
