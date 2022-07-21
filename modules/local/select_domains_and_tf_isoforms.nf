@@ -27,7 +27,6 @@ process SELECT_DOMAINS_AND_TF_ISOFORMS {
 
     output:
     path "*.tsv" , emit: tables
-    path "ips_domains_ipr_ens99_final_strat.tsv", emit: ips_domains_ipr_ens99_final_strat
     path "*.html", emit: knitted_html
 
     script:

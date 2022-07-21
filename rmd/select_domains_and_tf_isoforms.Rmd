@@ -53,6 +53,11 @@ ensg_enst_tsl_name = args[15]
 Load tables for this section:
 
 ```{r, include=T}
+cat(paste0(ensg_enst_ensp_name, "\n))
+cat(paste0(tfs_name, "\n))
+cat(paste0(ips_domains_ipr_ens99_final_strat_name, "\n))
+
+
 ensg_enst_ensp = read.delim(ensg_enst_ensp_name)
 
 tfs = read.delim(tfs_name)
