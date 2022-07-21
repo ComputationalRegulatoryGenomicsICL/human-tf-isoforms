@@ -23,7 +23,7 @@ domain_classification_wb = file( "./input/domain_classification/domain_table_man
 ensg_enst_tsl = file( "./input/ensembl99/ensg_enst_tsl_99.tsv" )
 ens99_pep = file( "./input/ensembl99/Homo_sapiens.GRCh38.pep.all.99.tsv.gz" )
 nondbd_annot = file( "./input/domain_classification/Other_domains_manually_curated_filled.tsv" )
-protein_fasta_tfs_99 = file( "./intput/interpro_scans/protein_fasta_tfs_99.fa" )
+protein_fasta_tfs_99 = file( "./input/interpro_scans/protein_fasta_tfs_99.fa" )
 
 
 workflow NF_ANALYSIS_REPRODUCTION {
