@@ -53,10 +53,6 @@ ensg_enst_tsl_name = args[15]
 Load tables for this section:
 
 ```{r, include=T}
-fileConn = file("output.txt")
-writeLines(c(ensg_enst_ensp_name, tfs_name, ips_domains_ipr_ens99_final_strat_name), fileConn)
-close(fileConn)
-
 ensg_enst_ensp = read.delim(ensg_enst_ensp_name)
 
 tfs = read.delim(tfs_name)
