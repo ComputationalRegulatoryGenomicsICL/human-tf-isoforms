@@ -466,7 +466,7 @@ tr.with.overlapping.domains.count = ips_domains_ipr_ens99_int_specific_retained_
 Load `ensg_enst_ensp` and `tfs`:
 
 ```{r, include=T}
-ensg_enst_ensp = readRDS(ensg_enst_ensp_name)
+ensg_enst_ensp = read.delim(ensg_enst_ensp_name)
 tfs = readRDS(tfs_name)
 ```
 

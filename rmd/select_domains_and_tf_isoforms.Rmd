@@ -58,7 +58,7 @@ ensg_enst_tsl_name = args[15]
 Load tables for this section:
 
 ```{r, include=T}
-ensg_enst_ensp = readRDS(ensg_enst_ensp_name)
+ensg_enst_ensp = read.delim(ensg_enst_ensp_name)
 
 tfs = readRDS(tfs_name)
 
