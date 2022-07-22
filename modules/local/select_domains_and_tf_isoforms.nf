@@ -22,11 +22,12 @@ process SELECT_DOMAINS_AND_TF_ISOFORMS {
     path ips_domains_ipr_ens99_final_strat
     path protein_fasta_tfs_99
     path ips_domains_ipr_ens99_int_specific_retained
-    path domain_classification_table
+    path domain_classification_wb
     path ensg_enst_tsl
 
     output:
     path "*.tsv" , emit: tables
+    path "*.rds",  emit: rds
     path "*.html", emit: knitted_html
 
     script:
@@ -38,7 +39,7 @@ process SELECT_DOMAINS_AND_TF_ISOFORMS {
         ${ips_domains_ipr_ens99_final_strat} \\
         ${protein_fasta_tfs_99} \\
         ${ips_domains_ipr_ens99_int_specific_retained} \\
-        ${domain_classification_table} \\
+        ${domain_classification_wb} \\
         ${ensg_enst_tsl}
     """
 }

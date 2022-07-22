@@ -17,6 +17,7 @@ output:
 
 ```{r, include=T}
 stringsAsFactors = F
+
 library(tidyverse)
 library(seqinr)
 library(kableExtra)
@@ -28,6 +29,8 @@ library(biomaRt)
 Print versions of the loaded libraries:
 
 ```{r, include=T}
+R.version
+packageVersion("base")
 packageVersion("tidyverse")
 packageVersion("seqinr")
 packageVersion("kableExtra")
@@ -46,7 +49,7 @@ tfs_name = args[10]
 ips_domains_ipr_ens99_final_strat_name = args[11]
 protein_fasta_tfs_99_name = args[12]
 ips_domains_ipr_ens99_int_specific_retained_name = args[13]
-domain_classification_table_name = args[14]
+domain_classification_wb_name = args[14]
 ensg_enst_tsl_name = args[15]
 ```
 
@@ -55,11 +58,11 @@ ensg_enst_tsl_name = args[15]
 Load tables for this section:
 
 ```{r, include=T}
-ensg_enst_ensp = read.delim(ensg_enst_ensp_name)
+ensg_enst_ensp = readRDS(ensg_enst_ensp_name)
 
-tfs = read.delim(tfs_name)
+tfs = readRDS(tfs_name)
 
-ips_domains_ipr_ens99_final_strat = read.delim(ips_domains_ipr_ens99_final_strat_name)
+ips_domains_ipr_ens99_final_strat = readRDS(ips_domains_ipr_ens99_final_strat_name)
 ```
 
 Make a table of isoforms without domains (i. e., without matches to InterPro entries):
@@ -487,9 +490,11 @@ tf_coding_transcripts_final_ens99_with_fam_names =
 Implementation:
 
 ```{r, include=T}
-ips_domains_ipr_ens99_int_specific_retained = read.delim(ips_domains_ipr_ens99_int_specific_retained_name)
+ips_domains_ipr_ens99_int_specific_retained = readRDS(ips_domains_ipr_ens99_int_specific_retained_name)
 
-domain_classification_table = read.delim(domain_classification_table_name)
+domain_classification_wb = loadWorkbook(domain_classification_wb_name)
+
+domain_classification_table = readWorksheet(domain_classification_wb, sheet = "domain_table_manually_annotated", header = TRUE)
 
 tf_coding_transcripts_final_ens99_with_fam_names = 
   
@@ -1447,6 +1452,9 @@ write.table(tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl,
             quote = F,
             sep = "\t",
             row.names = F)
+
+saveRDS(tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl, 
+        file = "tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl.rds")
 ```
 
 The `ensg_enst_tsl_99.tsv` table was obtained with the following code:

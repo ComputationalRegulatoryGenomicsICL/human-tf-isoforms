@@ -29,6 +29,8 @@ library(biomaRt)
 Print versions of the loaded libraries:
 
 ```{r, include=T}
+R.version
+packageVersion("base")
 packageVersion("tidyverse")
 packageVersion("kableExtra")
 packageVersion("biomaRt")
@@ -322,33 +324,18 @@ kable(dbd_ipr_humantfs[!dbd_ipr_humantfs$ENTRY_AC %in% ips_domains_ipr_ens99_ipr
 Write down tables for downstream modules:
 
 ```{r, include=T}
-write.table(ips_domains_ipr_ens99,
-            file = "ips_domains_ipr_ens99.tsv",
-            quote = F,
-            sep = "\t",
-            row.names = F)
+saveRDS(ips_domains_ipr_ens99,
+        file = "ips_domains_ipr_ens99.rds")
 
-write.table(humantfs_dbd_ids,
-            file = "humantfs_dbd_ids.tsv",
-            quote = F,
-            sep = "\t",
-            row.names = F)
+saveRDS(humantfs_dbd_ids,
+        file = "humantfs_dbd_ids.rds")
 
-write.table(ips_domains_ipr_ens99_iprs,
-            file = "ips_domains_ipr_ens99_iprs.tsv",
-            quote = F,
-            sep = "\t",
-            row.names = F)
+saveRDS(ips_domains_ipr_ens99_iprs,
+        file = "ips_domains_ipr_ens99_iprs.rds")
 
-write.table(dbd_ipr_humantfs,
-            file = "dbd_ipr_humantfs.tsv",
-            quote = F,
-            sep = "\t",
-            row.names = F)
+saveRDS(dbd_ipr_humantfs,
+        file = "dbd_ipr_humantfs.rds")
 
-write.table(tfs,
-            file = "tfs.tsv",
-            quote = F,
-            sep = "\t",
-            row.names = F)
+saveRDS(tfs,
+        file = "tfs.rds")
 ```

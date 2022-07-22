@@ -30,8 +30,8 @@ process PREPROCESS_DOMAIN_MATCHES {
 
     output:
     path "*.tsv" , emit: tables
-    path "ips_domains_ipr_ens99_final_strat.tsv", emit: ips_domains_ipr_ens99_final_strat
-    path "ips_domains_ipr_ens99_int_specific_retained.tsv", emit: ips_domains_ipr_ens99_int_specific_retained
+    path "ips_domains_ipr_ens99_final_strat.rds", emit: ips_domains_ipr_ens99_final_strat
+    path "ips_domains_ipr_ens99_int_specific_retained.rds", emit: ips_domains_ipr_ens99_int_specific_retained
     path "*.html", emit: knitted_html
 
     script:

@@ -17,6 +17,7 @@ output:
 
 ```{r, include=T}
 stringsAsFactors = F
+
 library(tidyverse)
 library(kableExtra)
 library(yaml)
@@ -30,6 +31,8 @@ library(R.utils)
 Print versions of the loaded libraries:
 
 ```{r, include=T}
+R.version
+packageVersion("base")
 packageVersion("tidyverse")
 packageVersion("kableExtra")
 packageVersion("yaml")
@@ -86,7 +89,7 @@ Hence, we will need to hierarchically filter InterPro entries, prioritizing doma
 The numbers of matches (InterPro entries) of different types in TF protein isoforms:
 
 ```{r, include=T, fig.width=10}
-ips_domains_ipr_ens99 = read.delim(ips_domains_ipr_ens99_name)
+ips_domains_ipr_ens99 = readRDS(ips_domains_ipr_ens99_name)
 
 interpro_entries = read.delim(interpro_entries_name)
 
@@ -364,14 +367,14 @@ ips_domains_ipr_ens99_int_specific_retained_iprs = ips_domains_ipr_ens99_int_spe
 Load `humantfs_dbd_ids` and `ips_domains_ipr_ens99_iprs`:
 
 ```{r, include=T}
-humantfs_dbd_ids = as.character(read.delim(humantfs_dbd_ids_name)$x)
-ips_domains_ipr_ens99_iprs = as.character(read.delim(ips_domains_ipr_ens99_iprs_name)$x)
+humantfs_dbd_ids = readRDS(humantfs_dbd_ids_name)
+ips_domains_ipr_ens99_iprs = readRDS(ips_domains_ipr_ens99_iprs_name)
 ```
 
 Now we have `r ips_domains_ipr_ens99_int_specific_retained_iprs %>% length()` unique specific InterPro entries out of `r ips_domains_ipr_ens99_iprs %>% length()` we had after scanning (specific and general together). So, almost all matches are specific. `r length(ips_domains_ipr_ens99_int_specific_retained_iprs[ips_domains_ipr_ens99_int_specific_retained_iprs %in% humantfs_dbd_ids])` of these entries are from HumanTFs. The following `r length(ips_domains_ipr_ens99_iprs[ips_domains_ipr_ens99_iprs %in% humantfs_dbd_ids]) - length(ips_domains_ipr_ens99_int_specific_retained_iprs[ips_domains_ipr_ens99_int_specific_retained_iprs %in% humantfs_dbd_ids])` InterPro entries from HumanTFs are general:
 
 ```{r, include=T}
-dbd_ipr_humantfs = read.delim(dbd_ipr_humantfs_name)
+dbd_ipr_humantfs = readRDS(dbd_ipr_humantfs_name)
 
 kable(dbd_ipr_humantfs[(dbd_ipr_humantfs$ENTRY_AC %in% ips_domains_ipr_ens99_iprs) & (!dbd_ipr_humantfs$ENTRY_AC %in% ips_domains_ipr_ens99_int_specific_retained_iprs),]) %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
@@ -463,8 +466,8 @@ tr.with.overlapping.domains.count = ips_domains_ipr_ens99_int_specific_retained_
 Load `ensg_enst_ensp` and `tfs`:
 
 ```{r, include=T}
-ensg_enst_ensp = read.delim(ensg_enst_ensp_name)
-tfs = read.delim(tfs_name)
+ensg_enst_ensp = readRDS(ensg_enst_ensp_name)
+tfs = readRDS(tfs_name)
 ```
 
 We have `r nrow(ips_domains_ipr_ens99_int_specific_retained_overlapping.dom)` overlapping specific domains (so they are not in hierarchical relationship in InterPro)! They are located in `r tr.with.overlapping.domains.count` transcripts out of the total number of transcripts (`r ensg_enst_ensp %>% filter(ensembl_gene_id %in% tfs$Ensembl.ID) %>% pull(ensembl_transcript_id) %>% unique() %>% length()`). Let us retain them at present, as they can have different meaning. For example, 
@@ -2284,11 +2287,8 @@ domain_table = ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
   arrange(ipr_accession) %>%
   distinct()
 
-write.table(domain_table,
-            file = "domain_table.tsv",
-            quote = F,
-            sep = "\t",
-            row.names = F)
+saveRDS(domain_table,
+        file = "domain_table.rds")
 ```
 
 At this point, I ran a custom script that classified all domains into "Non-DBD" (those who do not have any mention of "DNA" in their InterPro description) and others (empty category: "") who have at least one mention of "DNA" in their InterPro descriptions. It produced the file "interpro_domain_binary_classification.tsv" which is used below.
@@ -2691,15 +2691,9 @@ Indeed, a part of these specific DBD-related entries have ancestor (more general
 Write down tables for downstream modules:
 
 ```{r, include=T}
-write.table(ips_domains_ipr_ens99_final_strat,
-            file = "ips_domains_ipr_ens99_final_strat.tsv",
-            quote = F,
-            sep = "\t",
-            row.names = F)
+saveRDS(ips_domains_ipr_ens99_final_strat,
+        file = "ips_domains_ipr_ens99_final_strat.rds")
 
-write.table(ips_domains_ipr_ens99_int_specific_retained,
-            file = "ips_domains_ipr_ens99_int_specific_retained.tsv",
-            quote = F,
-            sep = "\t",
-            row.names = F)
+saveRDS(ips_domains_ipr_ens99_int_specific_retained,
+        file = "ips_domains_ipr_ens99_int_specific_retained.rds")
 ```
