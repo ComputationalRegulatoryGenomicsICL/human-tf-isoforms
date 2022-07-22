@@ -18,6 +18,7 @@ output:
 ```{r, include=T}
 stringsAsFactors = F
 library(tidyverse)
+library(seqinr)
 library(kableExtra)
 library(biomaRt)
 ```
@@ -28,6 +29,7 @@ Print versions of the loaded libraries:
 
 ```{r, include=T}
 packageVersion("tidyverse")
+packageVersion("seqinr")
 packageVersion("kableExtra")
 packageVersion("biomaRt")
 ```
