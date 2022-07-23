@@ -21,7 +21,7 @@ stringsAsFactors = F
 library(tidyverse)
 library(kableExtra)
 library(biomaRt)
-
+library(R.utils)
 ```
 
 # Print package versions
@@ -34,6 +34,7 @@ packageVersion("base")
 packageVersion("tidyverse")
 packageVersion("kableExtra")
 packageVersion("biomaRt")
+packageVersion("R.utils")
 ```
 
 # Read input
@@ -55,7 +56,9 @@ protein_fasta_tfs_name = args[13]
 First, retrieve all transcription factors from the [Human Transcription Factors](http://humantfs.ccbr.utoronto.ca/index.php) database ([Lambert et al., 2018](https://www.sciencedirect.com/science/article/pii/S0092867418301065?via%3Dihub)):
 
 ```{r, include=T}
-humantfs = as_tibble(read.csv(file = humantfs_name, header = T, row.names = 1))
+humantfs = as_tibble(read.csv(file = gunzip(humantfs_name), 
+                              header = T, 
+                              row.names = 1))
 ```
 
 Rename families: "CxxC" into "CxxC ZF" and "CxxC; AT hook" into "CxxC ZF; AT hook" - to unify them with the "CxxC ZF; MBD" family.
@@ -133,7 +136,7 @@ The five most abundant TF families are C2H2 ZF (`r nrow(tfs %>% filter(DBD == "C
 Read in all records from the InterPro database v77.0 (14/11/2019):
 
 ```{r, include=T}
-interpro_entries = read.delim(interpro_entries_name)
+interpro_entries = read.delim(gunzip(interpro_entries_name))
 ```
 
 Some InterPro entries used in HumanTFs were removed from InterPro v77 which is used in this analysis:
@@ -185,7 +188,7 @@ kable(head(dbd_ipr_humantfs)) %>%
 Parse the whole human Ensembl 99 annotation:
 
 ```{r, include=T}
-ensg_enst_ensp = read.delim(ensg_enst_ensp_name)
+ensg_enst_ensp = read.delim(gunzip(ensg_enst_ensp_name))
 ```
 
 This annotation was obtained using the following code:
@@ -253,7 +256,7 @@ write.table(gene_biotype_table,
 The following table contains all domain matches with InterPro entry IDs in TF protein products annotated in Ensembl 99. The matches were obtained using InterProScan v5.39-77.0:
 
 ```{r, include=T}
-ips_domains_ipr_ens99 = read.delim(file = protein_fasta_tfs_name, 
+ips_domains_ipr_ens99 = read.delim(file = gunzip(protein_fasta_tfs_name), 
                                    header = F, 
                                    row.names = NULL, 
                                    col.names = c("protein_accession", "seq_md5", "seq_len", 

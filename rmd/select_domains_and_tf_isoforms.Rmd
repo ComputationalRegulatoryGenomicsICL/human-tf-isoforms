@@ -22,6 +22,8 @@ library(tidyverse)
 library(seqinr)
 library(kableExtra)
 library(biomaRt)
+library(XLConnect)
+library(R.utils)
 ```
 
 # Print package versions
@@ -58,7 +60,7 @@ ensg_enst_tsl_name = args[15]
 Load tables for this section:
 
 ```{r, include=T}
-ensg_enst_ensp = read.delim(ensg_enst_ensp_name)
+ensg_enst_ensp = read.delim(gunzip(ensg_enst_ensp_name))
 
 tfs = readRDS(tfs_name)
 
@@ -80,7 +82,7 @@ matched_tf_proteins = ips_domains_ipr_ens99_final_strat %>%
 
 unmatched_tf_proteins = all_tf_proteins[!all_tf_proteins %in% matched_tf_proteins]
 
-protein_fasta = read.fasta(file = protein_fasta_tfs_99_name, seqtype = "AA")
+protein_fasta = read.fasta(file = gunzip(protein_fasta_tfs_99_name), seqtype = "AA")
 
 is.unmatched = function(protein_record) {
   protein_id = as.character(str_match(getAnnot(protein_record), "ENSP[0-9]+"))
@@ -1422,7 +1424,7 @@ Number of TF isoforms in these families: `r tf_coding_transcripts_final_ens99_wi
 Finally, let us filter TF isoforms by the Transcript Support Level:
 
 ```{r, include=T}
-ensg_enst_tsl = read.delim(ensg_enst_tsl_name,
+ensg_enst_tsl = read.delim(gunzip(ensg_enst_tsl_name),
                            stringsAsFactors = F) %>%
   dplyr::select(ensembl_gene_id,
                 ensembl_transcript_id,

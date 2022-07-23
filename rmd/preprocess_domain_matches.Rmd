@@ -91,7 +91,7 @@ The numbers of matches (InterPro entries) of different types in TF protein isofo
 ```{r, include=T, fig.width=10}
 ips_domains_ipr_ens99 = readRDS(ips_domains_ipr_ens99_name)
 
-interpro_entries = read.delim(interpro_entries_name)
+interpro_entries = read.delim(gunzip(interpro_entries_name))
 
 ips_domains_ipr_ens99 %>%
   left_join(interpro_entries, by = c("ipr_accession" = "ENTRY_AC")) %>%
@@ -466,7 +466,7 @@ tr.with.overlapping.domains.count = ips_domains_ipr_ens99_int_specific_retained_
 Load `ensg_enst_ensp` and `tfs`:
 
 ```{r, include=T}
-ensg_enst_ensp = read.delim(ensg_enst_ensp_name)
+ensg_enst_ensp = read.delim(gunzip(ensg_enst_ensp_name))
 tfs = readRDS(tfs_name)
 ```
 
