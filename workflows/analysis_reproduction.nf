@@ -59,7 +59,8 @@ workflow NF_ANALYSIS_REPRODUCTION {
         protein_fasta_tfs_99,
         PREPROCESS_DOMAIN_MATCHES.out.ips_domains_ipr_ens99_int_specific_retained,
         domain_classification_wb,
-        ensg_enst_tsl
+        ensg_enst_tsl,
+        humantfs
     )
 
     // DOMAIN_ANALYSIS( rmd_domain_analysis,

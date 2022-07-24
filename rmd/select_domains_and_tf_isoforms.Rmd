@@ -53,6 +53,7 @@ protein_fasta_tfs_99_name = args[12]
 ips_domains_ipr_ens99_int_specific_retained_name = args[13]
 domain_classification_wb_name = args[14]
 ensg_enst_tsl_name = args[15]
+humantfs_name = args[16]
 ```
 
 # Make the final table of all human TF isoforms
@@ -493,6 +494,10 @@ Implementation:
 
 ```{r, include=T}
 ips_domains_ipr_ens99_int_specific_retained = readRDS(ips_domains_ipr_ens99_int_specific_retained_name)
+
+humantfs = as_tibble(read.csv(file = gunzip(humantfs_name), 
+                              header = T, 
+                              row.names = 1))
 
 domain_classification_wb = loadWorkbook(domain_classification_wb_name)
 

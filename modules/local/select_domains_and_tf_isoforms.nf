@@ -24,6 +24,7 @@ process SELECT_DOMAINS_AND_TF_ISOFORMS {
     path ips_domains_ipr_ens99_int_specific_retained
     path domain_classification_wb
     path ensg_enst_tsl
+    path humantfs
 
     output:
     path "*.tsv" , emit: tables
@@ -40,6 +41,7 @@ process SELECT_DOMAINS_AND_TF_ISOFORMS {
         ${protein_fasta_tfs_99} \\
         ${ips_domains_ipr_ens99_int_specific_retained} \\
         ${domain_classification_wb} \\
-        ${ensg_enst_tsl}
+        ${ensg_enst_tsl} \\
+        ${humantfs}
     """
 }
