@@ -309,7 +309,8 @@ ips_domains_ipr_ens99 %>%
     geom_text(stat = "count", aes(label = ..count..), vjust = -1) +
     ylim(c(0, 30000)) +
     theme_classic() +
-    theme(legend.position = "none")
+    theme(legend.position = "none",
+          axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 
 ips_domains_ipr_ens99_iprs = ips_domains_ipr_ens99 %>% 
   pull(ipr_accession) %>% 
@@ -341,4 +342,34 @@ saveRDS(dbd_ipr_humantfs,
 
 saveRDS(tfs,
         file = "tfs.rds")
+
+write.table(ips_domains_ipr_ens99,
+            file = "ips_domains_ipr_ens99.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
+
+write.table(humantfs_dbd_ids,
+            file = "humantfs_dbd_ids.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
+
+write.table(ips_domains_ipr_ens99_iprs,
+            file = "ips_domains_ipr_ens99_iprs.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
+
+write.table(dbd_ipr_humantfs,
+            file = "dbd_ipr_humantfs.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
+            
+write.table(tfs,
+            file = "tfs.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
 ```

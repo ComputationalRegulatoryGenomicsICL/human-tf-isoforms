@@ -30,6 +30,7 @@ process SUMMARISE_TFS_AND_DOMAINS {
     path "dbd_ipr_humantfs.rds"          , emit: dbd_ipr_humantfs
     path "tfs.rds"                       , emit: tfs
     path "*.html"                        , emit: knitted_html
+    path "*.tsv"                         , emit: tables
 
     script:
     """

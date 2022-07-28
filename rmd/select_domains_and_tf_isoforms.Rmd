@@ -149,14 +149,23 @@ tf_coding_transcripts_final_ens99 = ips_domains_ipr_ens99_final_strat %>%
 ```
 
 Number of genes: `r tf_coding_transcripts_final_ens99 %>% pull(ensembl_gene_id) %>% unique() %>% length()`.
+
 Number of isoforms: `r tf_coding_transcripts_final_ens99 %>% pull(ensembl_transcript_id) %>% unique() %>% length()`.
+
 Number of isoforms without matches: `r tf_coding_transcripts_final_ens99 %>% filter(is.na(db)) %>% pull(ensembl_transcript_id) %>% unique() %>% length()`.
+
 Number of isoforms with matches: `r tf_coding_transcripts_final_ens99 %>% filter(!is.na(db)) %>% pull(ensembl_transcript_id) %>% unique() %>% length()`.
+
 Number of InterPro entry matches: `r tf_coding_transcripts_final_ens99 %>% filter(!is.na(db)) %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()`.
+
 Number of signature matches: `r tf_coding_transcripts_final_ens99 %>% filter(!is.na(db)) %>% nrow()`.
+
 Number of DBD signature matches: `r tf_coding_transcripts_final_ens99 %>% filter(!is.na(db)) %>% filter(domain_type == "DBD") %>% nrow()`.
+
 Number of unique InterPro entries: `r tf_coding_transcripts_final_ens99 %>% pull(ipr_accession) %>% unique() %>% length()`.
+
 Number of specific InterPro entry matches: `r tf_coding_transcripts_final_ens99 %>% filter(ipr_status == "specific") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` (`r tf_coding_transcripts_final_ens99 %>% filter(ipr_status == "specific") %>% filter(domain_type == "DBD") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` of which are DBD matches).
+
 Number of general InterPro entry matches: `r tf_coding_transcripts_final_ens99 %>% filter(ipr_status == "general") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` (`r tf_coding_transcripts_final_ens99 %>% filter(ipr_status == "general") %>% filter(domain_type == "DBD") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` of which are DBD matches).
 
 The table also contains `r tf_coding_transcripts_final_ens99 %>% filter(domain_type == "Other") %>% filter(ipr_status == "specific") %>% pull(ipr_accession) %>% unique() %>% length()` specific other domain types, which is correct.
@@ -559,14 +568,23 @@ tf_coding_transcripts_final_ens99_with_fam_names =
 ```
 
 Number of genes: `r tf_coding_transcripts_final_ens99_with_fam_names %>% pull(ensembl_gene_id) %>% unique() %>% length()`.
+
 Number of isoforms: `r tf_coding_transcripts_final_ens99_with_fam_names %>% pull(ensembl_transcript_id) %>% unique() %>% length()`.
+
 Number of isoforms without matches: `r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(is.na(db)) %>% pull(ensembl_transcript_id) %>% unique() %>% length()`.
+
 Number of isoforms with matches: `r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(!is.na(db)) %>% pull(ensembl_transcript_id) %>% unique() %>% length()`.
+
 Number of InterPro entry matches: `r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(!is.na(db)) %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()`.
+
 Number of signature matches: `r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(!is.na(db)) %>% nrow()`.
+
 Number of DBD signature matches: `r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(!is.na(db)) %>% filter(domain_type == "DBD") %>% nrow()`.
+
 Number of unique InterPro entries: `r tf_coding_transcripts_final_ens99_with_fam_names %>% pull(ipr_accession) %>% unique() %>% length()`.
+
 Number of specific InterPro entry matches: `r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(ipr_status == "specific") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` (`r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(ipr_status == "specific") %>% filter(domain_type == "DBD") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` of which are DBD matches).
+
 Number of general InterPro entry matches: `r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(ipr_status == "general") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` (`r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(ipr_status == "general") %>% filter(domain_type == "DBD") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` of which are DBD matches).
 
 The number of genes and the number of isoforms stay the same, which is correct. Additionally, the number of isoforms with matches declined a little, while the number of isoforms without matches increased by the same number, which is also correct. Finally, the numbers of InterPro entry matches, unique InterPro entries, specific and general matches declined, which is expected.
@@ -805,14 +823,23 @@ tf_coding_transcripts_final_ens99_with_fam_names = tf_coding_transcripts_final_e
 ```
 
 Number of genes: `r tf_coding_transcripts_final_ens99_with_fam_names %>% pull(ensembl_gene_id) %>% unique() %>% length()`.
+
 Number of isoforms: `r tf_coding_transcripts_final_ens99_with_fam_names %>% pull(ensembl_transcript_id) %>% unique() %>% length()`.
+
 Number of isoforms without matches: `r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(is.na(db)) %>% pull(ensembl_transcript_id) %>% unique() %>% length()`.
+
 Number of isoforms with matches: `r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(!is.na(db)) %>% pull(ensembl_transcript_id) %>% unique() %>% length()`.
+
 Number of InterPro entry matches: `r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(!is.na(db)) %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()`.
+
 Number of signature matches: `r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(!is.na(db)) %>% nrow()`.
+
 Number of DBD signature matches: `r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(!is.na(db)) %>% filter(domain_type == "DBD") %>% nrow()`.
+
 Number of unique InterPro entries: `r tf_coding_transcripts_final_ens99_with_fam_names %>% pull(ipr_accession) %>% unique() %>% length()`.
+
 Number of specific InterPro entry matches: `r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(ipr_status == "specific") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` (`r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(ipr_status == "specific") %>% filter(domain_type == "DBD") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` of which are DBD matches).
+
 Number of general InterPro entry matches: `r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(ipr_status == "general") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` (`r tf_coding_transcripts_final_ens99_with_fam_names %>% filter(ipr_status == "general") %>% filter(domain_type == "DBD") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` of which are DBD matches).
 
 The numbers of genes, isoforms, isoforms with and without matches stay the same, which is correct. On the other hand, the numbers of InterPro entry matches, signature matches and unique InterPro entries decreased, which is expected. Finally, the total number of general matches decreased and the number of general DBD matches turned into zero, which is also expected; on the other hand, the numbers of specific matches slightly increased, because we turned the general matches without overlaps into specific.
@@ -924,14 +951,23 @@ tf_coding_transcripts_final_ens99_with_fam_names_corrected = selected_overlappin
 ```
 
 Number of genes: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% pull(ensembl_gene_id) %>% unique() %>% length()`.
+
 Number of isoforms: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% pull(ensembl_transcript_id) %>% unique() %>% length()`.
+
 Number of isoforms without matches: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(is.na(db)) %>% pull(ensembl_transcript_id) %>% unique() %>% length()`.
+
 Number of isoforms with matches: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(!is.na(db)) %>% pull(ensembl_transcript_id) %>% unique() %>% length()`.
+
 Number of InterPro entry matches: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(!is.na(db)) %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()`.
+
 Number of signature matches: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(!is.na(db)) %>% nrow()`.
+
 Number of DBD signature matches: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(!is.na(db)) %>% filter(domain_type == "DBD") %>% nrow()`.
+
 Number of unique InterPro entries: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% pull(ipr_accession) %>% unique() %>% length()`.
+
 Number of specific InterPro entry matches: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(ipr_status == "specific") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` (`r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(ipr_status == "specific") %>% filter(domain_type == "DBD") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` of which are DBD matches).
+
 Number of general InterPro entry matches: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(ipr_status == "general") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` (`r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(ipr_status == "general") %>% filter(domain_type == "DBD") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` of which are DBD matches).
 
 The number of genes, the total number of isoforms, the numbers of isoforms with and without matches did not change, which is correct. The numbers of InterPro entry matches, signature matches, unique InterPro entries and specific matches has decreased, which is expected. Finally, the numbers of general matches stayed the same, which is also correct.
@@ -944,7 +980,7 @@ tf_coding_transcripts_final_ens99_with_fam_names_corrected.prev = tf_coding_tran
 
 # Classify DBDs into canonical and noncanonical
 
-We call a DBD "canonical" if least one TF family is described on the basis of its presence. Otherwise, we call a DBD "noncanonical". I manually grouped DBD-related InterPro entries that represent the same TF family. Based on this grouping, we can classify DBDs into canonical and noncanonical.
+We call a DBD "canonical" if at least one TF family is described on the basis of its presence. Otherwise, we call a DBD "noncanonical". I manually grouped DBD-related InterPro entries that represent the same TF family. Based on this grouping, we can classify DBDs into canonical and noncanonical.
 
 Canonical DBD InterPro entries and the TF families they represent are:
 
@@ -1362,14 +1398,23 @@ tf_coding_transcripts_final_ens99_with_fam_names_corrected = tf_coding_transcrip
 ```
 
 Number of genes: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% pull(ensembl_gene_id) %>% unique() %>% length()`.
+
 Number of isoforms: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% pull(ensembl_transcript_id) %>% unique() %>% length()`.
+
 Number of isoforms without matches: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(is.na(db)) %>% pull(ensembl_transcript_id) %>% unique() %>% length()`.
+
 Number of isoforms with matches: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(!is.na(db)) %>% pull(ensembl_transcript_id) %>% unique() %>% length()`.
+
 Number of InterPro entry matches: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(!is.na(db)) %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()`.
+
 Number of signature matches: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(!is.na(db)) %>% nrow()`.
+
 Number of DBD signature matches: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(!is.na(db)) %>% filter(domain_type == "DBD") %>% nrow()`.
+
 Number of unique InterPro entries: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% pull(ipr_accession) %>% unique() %>% length()`.
+
 Number of specific InterPro entry matches: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(ipr_status == "specific") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` (`r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(ipr_status == "specific") %>% filter(domain_type == "DBD") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` of which are DBD matches).
+
 Number of general InterPro entry matches: `r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(ipr_status == "general") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` (`r tf_coding_transcripts_final_ens99_with_fam_names_corrected %>% filter(ipr_status == "general") %>% filter(domain_type == "DBD") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` of which are DBD matches).
 
 The number of genes, the total number of isoforms, the numbers of isoforms with and without matches did not change, which is correct. The numbers of InterPro entry matches, specific InterPro entry matches and specific DBD entry matches increased, because we restored more specific domains then removed. The number of specific DBD entry matches increased more than the overall number of specific InterPro entry matches, because we restored some DBD matches and removed some specific matches of other types (I think that for the same reason the number of DBD signature matches increased). Finally, the numbers of general matches stayed the same, which is correct.
@@ -1379,7 +1424,7 @@ After the curation, we have `r tf_coding_transcripts_final_ens99_with_fam_names_
 The number of monotypical families decreased as the following families were excluded:
 
 ```{r, include=T}
-setdiff(tf_coding_transcripts_final_ens99_with_fam_names_corrected.prev %>%
+kable(setdiff(tf_coding_transcripts_final_ens99_with_fam_names_corrected.prev %>%
           filter(!stringr::str_detect(DBD, ";")) %>% 
           filter(!DBD %in% c("Unknown", "Excluded")) %>% 
           pull(DBD) %>% 
@@ -1388,7 +1433,9 @@ setdiff(tf_coding_transcripts_final_ens99_with_fam_names_corrected.prev %>%
           filter(!stringr::str_detect(DBD, ";")) %>% 
           filter(!DBD %in% c("Unknown", "Excluded")) %>% 
           pull(DBD) %>% 
-          unique())
+          unique())) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")
 ```
 
 MADF was merged with Myb/SANT; mTERF was excluded as there were no DBD matches in the mTERF proteins; and CENPB and Brinker became part of combined families (see below).
@@ -1426,7 +1473,7 @@ Number of TF isoforms in these families: `r tf_coding_transcripts_final_ens99_wi
 
 # Filter isoforms by the Transcript Support Level
 
-Finally, let us filter TF isoforms by the Transcript Support Level:
+Finally, let us filter TF isoforms by the [Ensembl transcript flags](https://www.ensembl.org/info/genome/genebuild/transcript_quality_tags.html). We retain only isoforms with the top two highest Transcript Support Levels (TSLs) 1 and 2, as well as isoforms with an undefined TSL (TSL = NA) and isoforms with the MANE Select flag (independently of their TSL). Isoforms with TSL = NA are not necessarily speculative but just were not assessed for TSL. They are produced by pseudogenes, human leukocyte antigens, immunoglobulin genes or T-cell receptors, or contain only one exon. Isoforms with the MANE Select flag exactly match between the Ensembl and RefSeq annotations and consequently are likely to be real and correctly annotated.
 
 ```{r, include=T}
 ensg_enst_tsl = read.delim(gunzip(ensg_enst_tsl_name),
@@ -1462,6 +1509,12 @@ write.table(tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl,
 
 saveRDS(tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl, 
         file = "tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl.rds")
+
+write.table(tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl,
+            file = "tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
 ```
 
 The `ensg_enst_tsl_99.tsv` table was obtained with the following code:

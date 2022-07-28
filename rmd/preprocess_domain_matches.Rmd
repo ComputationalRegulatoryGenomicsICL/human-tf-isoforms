@@ -1625,14 +1625,13 @@ ips_domains_ipr_ens99 %>%
     geom_text(stat = "count", aes(label = ..count..), vjust = -1) +
     ylim(c(0, 30000)) +
     theme_classic() +
-    theme(legend.position = "none")
+    theme(legend.position = "none",
+          axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 ```
 
 So, signatures from Hamap and TIGRFAM disappeared. The numbers of signatures from Gene3D, PANTHER, RIRSF, PRINTS, and SUPERFAMILY decreased dramatically. The numbers of signatures from the other databases (CDD, Pfam, ProSitePatterns, ProSiteProfiles, and SMART) also lowered but not as much.
 
-Define the hierarchy of preference of signatures from different databases. Let us prioritize domain databases and put Pfam first as probably the most standard annotation. The order of the other domain databases is determined by the decreasing number of their signatures in our filtered results: Pfam, SMART, ProSiteProfiles, CDD.
-
-Next, let us place SUPERFAMILY and Gene3D matches as they represent loci with certain 3D structures and hence can correspond to domains.
+Define the hierarchy of preference of signatures from different databases. Let us prioritize domain databases and put Pfam first as probably the most standard annotation. The order of the other domain databases is determined by the decreasing number of their signatures in our filtered results: Pfam, SMART, ProSiteProfiles, CDD, SUPERFAMILY, Gene3D.
 
 Next, let us put PRINTS and ProSitePatterns. These signatures are sets of small fragments (conserved motifs) that are used to characterize protein families. They often mark a domain or a conserved site. See, for example, IPR001523 in PAX6-201; IPR020479 in DLX6-202; IPR013087 in ZNF195-201 where the ProSitePatterns signature annotated a zinc-finger array; or IPR018362 in NFYA-202.
 
@@ -1826,7 +1825,7 @@ The total number of signatures is `r nrow(ips_domains_ipr_ens99_int_specific_ret
 
 ## Re-select coordinates for IPR003656 (BED ZF)
 
-Thirdly, re-select coordinates for IPR003656 ("Zinc finger, BED-type"), as a signature SM00614 from SMART integrated into this entry is not relevant (according to InterPro support, this signature overhits many proteins, in comparison to other signatures integrated into the entry): 
+Thirdly, re-select coordinates for IPR003656 ("Zinc finger, BED-type"), as a signature SM00614 from SMART integrated into this entry is not relevant (according to InterPro support, this signature overhits many proteins, in comparison to other signatures integrated into the entry):
 
 ```{r, include=T}
 ips_domains_ipr_ens99_int_specific_retained5_IPR003656 = ips_domains_ipr_ens99_int_specific_retained5 %>%
@@ -2289,6 +2288,12 @@ domain_table = ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
 
 saveRDS(domain_table,
         file = "domain_table.rds")
+
+write.table(domain_table,
+            file = "domain_table.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
 ```
 
 At this point, I ran a custom script that classified all domains into "Non-DBD" (those who do not have any mention of "DNA" in their InterPro description) and others (empty category: "") who have at least one mention of "DNA" in their InterPro descriptions. It produced the file "interpro_domain_binary_classification.tsv" which is used below.
@@ -2696,4 +2701,16 @@ saveRDS(ips_domains_ipr_ens99_final_strat,
 
 saveRDS(ips_domains_ipr_ens99_int_specific_retained,
         file = "ips_domains_ipr_ens99_int_specific_retained.rds")
+
+write.table(ips_domains_ipr_ens99_final_strat,
+            file = "ips_domains_ipr_ens99_final_strat.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
+            
+write.table(ips_domains_ipr_ens99_int_specific_retained,
+            file = "ips_domains_ipr_ens99_int_specific_retained.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
 ```
