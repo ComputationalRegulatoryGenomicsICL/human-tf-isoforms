@@ -19,7 +19,7 @@ output:
 stringsAsFactors = F
 
 library(tidyverse)
-#library(scales)
+library(scales)
 library(kableExtra)
 #library(biomaRt)
 #library(seqinr)
@@ -38,7 +38,7 @@ Print versions of the loaded libraries:
 R.version
 packageVersion("base")
 packageVersion("tidyverse")
-#packageVersion("scales")
+packageVersion("scales")
 packageVersion("kableExtra")
 #packageVersion("biomaRt")
 #packageVersion("seqinr")
