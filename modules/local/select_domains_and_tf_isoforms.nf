@@ -30,6 +30,7 @@ process SELECT_DOMAINS_AND_TF_ISOFORMS {
     path "*.tsv" , emit: tables
     path "*.rds",  emit: rds
     path "*.html", emit: knitted_html
+    path "tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl.tsv", emit: tf_coding_transcripts_final_ens99_with_fam_names_corrected_with_tsl
 
     script:
     """

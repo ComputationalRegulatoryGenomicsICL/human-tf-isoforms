@@ -63,17 +63,10 @@ workflow NF_ANALYSIS_REPRODUCTION {
         humantfs
     )
 
-    // DOMAIN_ANALYSIS( rmd_domain_analysis,
-    //                  humantfs_database,
-    //                  interpro_entries_list,
-    //                  ensembl99_all_table,
-    //                  gene_biotype_table,
-    //                  protein_fasta_tfs,
-    //                  ipr_hierarchy_yaml,
-    //                  draft_classification_table,
-    //                  domain_classification_wb,
-    //                  ensg_enst_tsl,
-    //                  ens99_pep,
-    //                  nondbd_annot )
+    DOMAIN_ANALYSIS ( 
+        rmd_domain_analysis,
+        SELECT_DOMAINS_AND_TF_ISOFORMS.out.tf_coding_transcripts_final_ens99_with_fam_names_corrected_with_tsl,
+        ens99_pep
+    )
 
 }

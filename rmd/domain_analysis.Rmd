@@ -17,16 +17,17 @@ output:
 
 ```{r, include=T}
 stringsAsFactors = F
+
 library(tidyverse)
-library(scales)
+#library(scales)
 library(kableExtra)
-library(biomaRt)
-library(seqinr)
-library(yaml)
-library(data.tree)
-library(XLConnect)
-library(msa)
-library(R.utils)
+#library(biomaRt)
+#library(seqinr)
+#library(yaml)
+#library(data.tree)
+#library(XLConnect)
+#library(msa)
+#library(R.utils)
 ```
 
 # Print package versions
@@ -34,16 +35,18 @@ library(R.utils)
 Print versions of the loaded libraries:
 
 ```{r, include=T}
+R.version
+packageVersion("base")
 packageVersion("tidyverse")
-packageVersion("scales")
+#packageVersion("scales")
 packageVersion("kableExtra")
-packageVersion("biomaRt")
-packageVersion("seqinr")
-packageVersion("yaml")
-packageVersion("data.tree")
-packageVersion("XLConnect")
-packageVersion("msa")
-packageVersion("R.utils")
+#packageVersion("biomaRt")
+#packageVersion("seqinr")
+#packageVersion("yaml")
+#packageVersion("data.tree")
+#packageVersion("XLConnect")
+#packageVersion("msa")
+#packageVersion("R.utils")
 ```
 
 # Read input
@@ -53,17 +56,20 @@ Read args:
 ```{r, include=T}
 args = commandArgs()
 
-humantfs_name = args[9]
-interpro_entries_name = args[10]
-ensembl99_all_name = args[11]
-gene_biotype_table_name = args[12]
-protein_fasta_tfs_name = args[13]
-ipr_hierarchy_yaml_name = args[14]
-draft_classification_table_name = args[15]
-domain_classification_wb_name = args[16]
-ensg_enst_tsl_name = args[17]
-ens99_pep_name = args[18]
-nondbd.annot_name = args[19]
+tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl_name = args[9]
+ens99_pep_name = args[10]
+
+#humantfs_name = args[9]
+#interpro_entries_name = args[10]
+#ensembl99_all_name = args[11]
+#gene_biotype_table_name = args[12]
+#protein_fasta_tfs_name = args[13]
+#ipr_hierarchy_yaml_name = args[14]
+#draft_classification_table_name = args[15]
+#domain_classification_wb_name = args[16]
+#ensg_enst_tsl_name = args[17]
+#ens99_pep_name = args[18]
+#nondbd.annot_name = args[19]
 ```
 
 # Assess DBD presence and absence in TF isoforms
@@ -73,8 +79,7 @@ Alternative splicing can potentially remove all DBDs from a TF. So let us find h
 Create a table showing which TFs have at least one isoform without DBDs:
 
 ```{r, include=T}
-# tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl = read.delim("data/results/domain_analysis/tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl.tsv",
-            header = T)
+tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl = readRDS(tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl_name)
 
 dbd_yes_no_gene_table = tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl %>%
   filter(DBD != "Unknown") %>%
@@ -175,7 +180,6 @@ ggplot(data = dbd.presence.absence.tf.frequencies,
 After the family names, in parentheses, we show the number of TFs in each family.
 
 ```{r, include=T}
-#kable(
 dbd.presence.frequencies.summary = dbd.presence.frequencies %>%
   left_join(dbd_gene_counts, by = c("family" = "dbd")) %>%
   dplyr::select(family, family.num, absent.frequency) %>%
@@ -189,13 +193,12 @@ dbd.presence.frequencies.summary = dbd.presence.frequencies %>%
   arrange(dplyr::desc(n_genes)) %>%
   filter(n_genes >= 5)
 
-dbd.presence.frequencies.summary
-# ) %>%
-# kable_styling(bootstrap_options = c("striped", "hover")) %>%
-#   scroll_box(width = "100%")  
+kable(dbd.presence.frequencies.summary) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")  
 ```
 
-Find top 5 biggest differences in the % of DBD- isoforms between TF families with a comparable total number of isoforms (differing by no more than 20% of the bigger number):
+The biggest differences in the % of DBD- isoforms between TF families with a comparable total number of isoforms (differing by no more than 20% of the bigger number and containing no fewer than 10 isoforms):
 
 ```{r, include=T}
 diff.cutoff.fraction = 0.2
@@ -232,8 +235,7 @@ dbd.presence.frequencies.diff = dbd.presence.frequencies.diff %>%
 
 dbd.presence.frequencies.diff %>%
   filter(absent.frequency1 > 0.2) %>%
-  filter(n_genes1 > 10) #%>%
-  #head(5)
+  filter(n_genes1 > 10)
 ```
 
 Plot the differences:
@@ -333,6 +335,11 @@ write.table(dbd_yes_no_tx_table %>%
             quote = F,
             sep = "\t",
             row.names = F)
+
+saveRDS(dbd_yes_no_tx_table %>%
+          dplyr::rename("n_dbd" = "n_canonical") %>%
+          dplyr::rename("tf_family" = "DBD"),
+        file = "base_dbd_expression_analysis_table.rds")
 ```
 
 Generate a list of DBD- isoforms:
@@ -375,11 +382,17 @@ write.table(tf.isodorms.nodbd,
             sep = "\t",
             row.names = F)
 
+saveRDS(tf.isodorms.nodbd,
+        file = "isoforms_no_dbd_list.rds")
+
 write.table(tf.isodorms.nodom,
             file = "isoforms_no_domains_list.tsv",
             quote = F,
             sep = "\t",
             row.names = F)
+
+saveRDS(tf.isodorms.nodom,
+        file = "isoforms_no_domains_list.rds")
 ```
 
 Plot the isoform frequencies:
@@ -642,7 +655,6 @@ ggplot(data = data.frame("Number_of_DBDs" = c(rep("1", tf.family.count),
                                                                    ">3"))),
        aes(x = Family, y = Frequency, group = Family)) +
   geom_col(aes(fill = Number_of_DBDs)) +
-  #scale_y_continuous(limits = c(0, 1), breaks = pretty_breaks(n = 11)) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 ```
@@ -655,14 +667,15 @@ mult.dbd.fams.tfs = n_dbd_table %>%
   mutate(DBD = as.character(DBD)) %>%
   pull(DBD) %>%
   unique()
-mult.dbd.fams.tfs
-```
 
-```{r, include=T}
-n_dbd_table_summary = 
-n_dbd_table %>%
+# Exclude C2H2 ZFs for summaries later on
+n_dbd_table_summary = n_dbd_table %>%
   filter(DBD != "C2H2 ZF") %>%
   dplyr::count(max_n_dbds)
+
+kable(mult.dbd.fams.tfs) %>%
+    kable_styling(bootstrap_options = c("striped", "hover")) %>%
+    scroll_box(width = "100%")  
 ```
 
 After the family names, in parentheses, we show the number of TFs in each family.
@@ -708,7 +721,6 @@ ggplot(data = data.frame("Number_of_DBDs" = c("1", "2", "3", ">3"),
                                                                    ">3"))),
        aes(x = Feature, y = Frequency, group = Feature)) +
   geom_col(aes(fill = Number_of_DBDs)) +
-  #scale_y_continuous(limits = c(0, 1), breaks = pretty_breaks(n = 11)) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 ```
@@ -844,7 +856,9 @@ mult.dbd.fams.isofs = n_dbd_table_isof %>%
   pull(DBD) %>%
   unique()
 
-mult.dbd.fams.isofs
+kable(mult.dbd.fams.isofs) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")  
 ```
 
 After the family names, in parentheses, we show the number of TFs in each family.
@@ -900,7 +914,9 @@ Hence, although `r (n_dbd_table %>% filter(max_n_dbds > 3) %>% nrow()) / (n_dbd_
 Check that from the table for TFs and for TF isoforms we obtain the same lists of families:
 
 ```{r, include=T}
-unique(mult.dbd.fams.tfs == mult.dbd.fams.isofs)
+kable(unique(mult.dbd.fams.tfs == mult.dbd.fams.isofs)) %>%
+    kable_styling(bootstrap_options = c("striped", "hover")) %>%
+    scroll_box(width = "100%")
 ```
 
 Yes, this is the case.
@@ -1015,7 +1031,9 @@ ggplot(data = data.frame("Category" = c(rep("Constant DBD combination", tf.famil
 ```
 
 ```{r}
-dbd.changing.num.frequencies
+kable(dbd.changing.num.frequencies) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")  
 ```
 
 Here, we selected TFs that have more than one isoform and more than one DBD in at least one isoform (N = `r dbd_changing_num_table %>% nrow()`). The number of such TFs in each family is given in parentheses. In `r (dbd_changing_num_table %>% filter(is_dbd_combination_changing) %>% nrow()) / (dbd_changing_num_table %>% nrow()) * 100`% of these TFs, the combination of DBDs changes between isoforms. The number of TF families in this plot is `r dbd_changing_num_table %>% pull(DBD) %>% unique() %>% length()`.
