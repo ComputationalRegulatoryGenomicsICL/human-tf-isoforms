@@ -182,7 +182,7 @@ kable(dbd.presence.frequencies.summary) %>%
   scroll_box(width = "100%")  
 ```
 
-The biggest differences in the % of DBD- isoforms between TF families with a comparable total number of isoforms (differing by no more than 20% of the bigger number and containing no fewer than 10 isoforms):
+The biggest differences in the percentage of DBD- isoforms between TF families with a comparable total number of isoforms (differing by no more than 20% of the bigger number which should be 10 or more):
 
 ```{r, include=T}
 diff.cutoff.fraction = 0.2
