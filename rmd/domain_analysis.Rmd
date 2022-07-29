@@ -75,7 +75,7 @@ dbd_yes_no_gene_table = tf_coding_transcripts_final_ens99_with_fam_names_correct
 
 Plot the TF frequencies (Fig. 3.6B):
 
-```{r, echo=F, fig.width=15, fig.height=5}
+```{r, include=T, fig.width=15, fig.height=5}
 count_genes = function(domain_type) {
   return(dbd_gene_counts %>%
     filter(dbd == domain_type) %>%
@@ -154,11 +154,9 @@ p = ggplot(data = dbd.presence.absence.tf.frequencies,
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
 
 p
-```
 
-Save Fig. 3.6B:
+# Save Fig. 3.6B:
 
-```{r, include=T}
 ggsave("Fig_3_6B.pdf",
        plot = p)
 ```
@@ -401,7 +399,7 @@ saveRDS(tf.isodorms.nodom,
 
 Plot the isoform frequencies:
 
-```{r, echo=F, fig.width=15, fig.height=5}
+```{r, include=T, fig.width=15, fig.height=5}
 count_genes = function(domain_type) {
   return(dbd_gene_counts %>%
     filter(dbd == domain_type) %>%
@@ -582,7 +580,7 @@ n_dbd_table = tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_ts
 
 Plot frequencies of TFs with different maximum numbers of DBDs. Let us order the bars by decreasing proportion of TFs with maximum one DBD (Fig. 3.7B):
 
-```{r, echo=F, fig.width=15, fig.height=5}
+```{r, include=T, fig.width=15, fig.height=5}
 count_genes = function(domain_type) {
   return(dbd_gene_counts %>%
     filter(dbd == domain_type) %>%
@@ -781,7 +779,7 @@ n_dbd_table_isof = tf_coding_transcripts_final_ens99_with_fam_names_corrected.wi
 
 Plot the frequencies:
 
-```{r, echo=F, fig.width=15, fig.height=5}
+```{r, include=T, fig.width=15, fig.height=5}
 count_genes = function(domain_type) {
   return(dbd_gene_counts %>%
     filter(dbd == domain_type) %>%
@@ -1156,7 +1154,7 @@ n_vardbd_table = dbd_seq_table %>%
 
 Plot frequencies of different counts of DBD variants (Fig. 3.8B):
 
-```{r, echo=F, fig.width=15, fig.height=5}
+```{r, include=T, fig.width=15, fig.height=5}
 count_genes = function(domain_type) {
   return(dbd_gene_counts %>%
     filter(dbd == domain_type) %>%
