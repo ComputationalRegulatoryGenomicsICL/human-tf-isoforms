@@ -21,12 +21,6 @@ stringsAsFactors = F
 library(tidyverse)
 library(scales)
 library(kableExtra)
-#library(biomaRt)
-#library(seqinr)
-#library(yaml)
-#library(data.tree)
-#library(XLConnect)
-#library(msa)
 library(R.utils)
 ```
 
@@ -40,12 +34,6 @@ packageVersion("base")
 packageVersion("tidyverse")
 packageVersion("scales")
 packageVersion("kableExtra")
-#packageVersion("biomaRt")
-#packageVersion("seqinr")
-#packageVersion("yaml")
-#packageVersion("data.tree")
-#packageVersion("XLConnect")
-#packageVersion("msa")
 packageVersion("R.utils")
 ```
 
@@ -59,18 +47,6 @@ args = commandArgs()
 tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl_name = args[9]
 ens99_pep_name = args[10]
 canonical_dbd_iprs_name = args[11]
-
-#humantfs_name = args[9]
-#interpro_entries_name = args[10]
-#ensembl99_all_name = args[11]
-#gene_biotype_table_name = args[12]
-#protein_fasta_tfs_name = args[13]
-#ipr_hierarchy_yaml_name = args[14]
-#draft_classification_table_name = args[15]
-#domain_classification_wb_name = args[16]
-#ensg_enst_tsl_name = args[17]
-#ens99_pep_name = args[18]
-#nondbd.annot_name = args[19]
 ```
 
 # Assess DBD presence and absence in TF isoforms
@@ -97,7 +73,7 @@ dbd_yes_no_gene_table = tf_coding_transcripts_final_ens99_with_fam_names_correct
   distinct()
 ```
 
-Plot the TF frequencies:
+Plot the TF frequencies (Fig. 3.6B):
 
 ```{r, echo=F, fig.width=15, fig.height=5}
 count_genes = function(domain_type) {
@@ -170,12 +146,21 @@ dbd.presence.absence.tf.frequencies = data.frame("Category" = c(rep("Some isofor
   mutate(Category = factor(Category, levels = c("Some isoforms without DBD",
                                                  "All isoforms with DBD")))
 
-ggplot(data = dbd.presence.absence.tf.frequencies,
+p = ggplot(data = dbd.presence.absence.tf.frequencies,
        aes(x = Family, y = Frequency, group = Family)) +
   geom_col(aes(fill = Category)) +
   scale_y_continuous(limits = c(0, 1), breaks = pretty_breaks(n = 11)) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+
+p
+```
+
+Save Fig. 3.6B:
+
+```{r, include=T}
+ggsave("Fig_3_6B.pdf",
+       plot = p)
 ```
 
 After the family names, in parentheses, we show the number of TFs in each family.
@@ -234,12 +219,14 @@ for (i in 1:(nrow(dbd.presence.frequencies.summary) - 1)) {
 dbd.presence.frequencies.diff = dbd.presence.frequencies.diff %>%
   arrange(absent.frequency.ratio)
 
-dbd.presence.frequencies.diff %>%
-  filter(absent.frequency1 > 0.2) %>%
-  filter(n_genes1 > 10)
+kable(dbd.presence.frequencies.diff %>%
+        filter(absent.frequency1 > 0.2) %>%
+        filter(n_genes1 > 10)) %>%
+    kable_styling(bootstrap_options = c("striped", "hover")) %>%
+    scroll_box(width = "100%")   
 ```
 
-Plot the differences:
+Plot the differences (Fig. 3.6C-D):
 
 ```{r, include=T}
 # First comparison
@@ -264,7 +251,7 @@ cenpb.absent.freq = dbd.presence.frequencies.diff %>%
 
 cenpb.present.freq = 1 - cenpb.absent.freq
 
-data.frame(family.num = rep(c("C2H2 ZF; Homeodomain (13)", "THAP finger (12)",
+p = data.frame(family.num = rep(c("C2H2 ZF; Homeodomain (13)", "THAP finger (12)",
                               "CENPB; Pipsqueak (11)"), 2),
            isof.frequency = c(c2h2_hom.absent.freq, thap.absent.freq, 
                               cenpb.absent.freq, 
@@ -276,6 +263,13 @@ data.frame(family.num = rep(c("C2H2 ZF; Homeodomain (13)", "THAP finger (12)",
   ggplot(aes(x = family.num, y = isof.frequency)) +
     geom_col(aes(fill = isof.category)) +
     theme_classic()
+
+p
+
+# Save Fig. 3.6C:
+
+ggsave("Fig_3_6C.pdf",
+       plot = p)
 
 # Second comparison
 cxxc.absent.freq = dbd.presence.frequencies.diff %>%
@@ -299,7 +293,7 @@ irf.absent.freq = dbd.presence.frequencies.diff %>%
 
 irf.present.freq = 1 - irf.absent.freq
 
-data.frame(family.num = rep(c("CxxC ZF (11)", 
+p = data.frame(family.num = rep(c("CxxC ZF (11)", 
                               "Rel (10)", "IRF (9)"), 2),
            isof.frequency = c(cxxc.absent.freq, 
                               rel.absent.freq, irf.absent.freq, 
@@ -311,6 +305,13 @@ data.frame(family.num = rep(c("CxxC ZF (11)",
   ggplot(aes(x = family.num, y = isof.frequency)) +
     geom_col(aes(fill = isof.category)) +
     theme_classic()
+
+p
+
+# Save Fig. 3.6D:
+
+ggsave("Fig_3_6D.pdf",
+       plot = p)
 ```
 
 A hypothesis about such differences between TF families with a comparable number of isoforms is that TFs from families with a small proportion of DBD-less isoforms do not have any other functions, apart from being transcription factors, while TFs from the families with a big proportion of DBD-less isoforms may have additional functions when a DBD is lost (for example, be cofactors or sequestering factors). We will test this hypothesis later on by looking at the presence of domains of other types and at the level of expression of DBD-containing and DBD-less isoforms.
@@ -365,7 +366,9 @@ tf.isodorms.nodom = tf_coding_transcripts_final_ens99_with_fam_names_corrected.w
 So we have `r length(tf.isodorms.nodom)` isoforms without domains. Check that they are all in the `tf.isodorms.nodbd` list:
 
 ```{r, include=T}
-length(intersect(tf.isodorms.nodom, tf.isodorms.nodbd)) == length(tf.isodorms.nodom)
+kable(length(intersect(tf.isodorms.nodom, tf.isodorms.nodbd)) == length(tf.isodorms.nodom)) %>%
+    kable_styling(bootstrap_options = c("striped", "hover")) %>%
+    scroll_box(width = "100%")   
 ```
 
 Finally, let us generate the list of DBD- isoforms that have other domains:
@@ -477,10 +480,10 @@ TFs with at least one isoform missing DBDs: `r dbd_yes_no_gene_table %>% filter(
 
 TFs with all isoforms containing a DBD: `r dbd_yes_no_gene_table %>% filter(are_all_isoforms_with_dbds == T) %>% nrow()` (`r (dbd_yes_no_gene_table %>% filter(are_all_isoforms_with_dbds == T) %>% nrow()) / (dbd_yes_no_gene_table %>% nrow()) * 100`%).
 
-A barplot with overall TF frequencies:
+A barplot with overall TF frequencies (Fig. 3.6A, left):
 
 ```{r, include=T}
-ggplot(data = data.frame("Category" = c("Some isoforms without DBD",
+p = ggplot(data = data.frame("Category" = c("Some isoforms without DBD",
                                         "All isoforms with DBD"),
                          "Frequency" = c((dbd_yes_no_gene_table %>% 
                                            filter(are_all_isoforms_with_dbds == F) %>% 
@@ -499,17 +502,24 @@ ggplot(data = data.frame("Category" = c("Some isoforms without DBD",
   geom_col(aes(fill = Category)) +
   scale_y_continuous(limits = c(0, 1), breaks = pretty_breaks(n = 11)) +
   theme_classic() +
-  theme(axis.text.x = element_blank()) #element_text(angle = 90, hjust = 1, vjust = 0.5))
+  theme(axis.text.x = element_blank())
+
+p
+
+# Save Fig. 3.6A, left:
+
+ggsave("Fig_3_6A_left.pdf",
+       plot = p)
 ```
 
 TF isoforms without DBDs: `r dbd_yes_no_tx_table %>% filter(n_canonical == 0) %>% nrow()` (`r (dbd_yes_no_tx_table %>% filter(n_canonical == 0) %>% nrow()) / (dbd_yes_no_tx_table %>% nrow()) * 100`%).
 
 TF isoforms with DBDs: `r dbd_yes_no_tx_table %>% filter(n_canonical > 0) %>% nrow()` (`r (dbd_yes_no_tx_table %>% filter(n_canonical > 0) %>% nrow()) / (dbd_yes_no_tx_table %>% nrow()) * 100`%).
 
-A barplot with overall isoform frequencies:
+A barplot with overall isoform frequencies (Fig. 3.6A, right):
 
 ```{r, include=T}
-ggplot(data = data.frame("Category" = c("Some isoforms without DBD",
+p = ggplot(data = data.frame("Category" = c("Some isoforms without DBD",
                                         "All isoforms with DBD"),
                          "Frequency" = c((dbd_yes_no_tx_table %>% 
                                             filter(n_canonical == 0) %>% 
@@ -529,6 +539,13 @@ ggplot(data = data.frame("Category" = c("Some isoforms without DBD",
   scale_y_continuous(limits = c(0, 1), breaks = pretty_breaks(n = 11)) +
   theme_classic() +
   theme(axis.text.x = element_blank()) #element_text(angle = 90, hjust = 1, vjust = 0.5))
+
+p
+
+# Save Fig. 3.6A, right:
+
+ggsave("Fig_3_6A_right.pdf",
+       plot = p)
 ```
 
 In `r dbd.presence.absence.tf.frequencies %>% filter(Category == "Some isoforms without DBD") %>% filter(Frequency == 1) %>% nrow()` families, 100% of TFs are missing a DBD in at least one isoform, but those families have only one or two genes. In contrast, in `r dbd.presence.absence.tf.frequencies %>% filter(Category == "All isoforms with DBD") %>% filter(Frequency == 1) %>% nrow()` families, TFs never miss a DBD, and many of these families have three or more TFs, althought these families are still relatively small. On the other hand, the majority of families, including the biggest ones, can have any frequency of one or the other category. 
@@ -563,7 +580,7 @@ n_dbd_table = tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_ts
   arrange(DBD, humantfs_gene_name)
 ```
 
-Plot frequencies of TFs with different maximum numbers of DBDs. Let us order the bars by decreasing proportion of TFs with maximum one DBD:
+Plot frequencies of TFs with different maximum numbers of DBDs. Let us order the bars by decreasing proportion of TFs with maximum one DBD (Fig. 3.7B):
 
 ```{r, echo=F, fig.width=15, fig.height=5}
 count_genes = function(domain_type) {
@@ -644,7 +661,7 @@ dbd.n.frequencies.sorted = c(dbd.1.frequencies.sorted,
                              dbd.3.frequencies.sorted,
                              dbd.many.frequencies.sorted)
 
-ggplot(data = data.frame("Number_of_DBDs" = c(rep("1", tf.family.count),
+p = ggplot(data = data.frame("Number_of_DBDs" = c(rep("1", tf.family.count),
                                               rep("2", tf.family.count),
                                               rep("3", tf.family.count),
                                               rep(">3", tf.family.count)),
@@ -658,6 +675,13 @@ ggplot(data = data.frame("Number_of_DBDs" = c(rep("1", tf.family.count),
   geom_col(aes(fill = Number_of_DBDs)) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+
+p
+
+# Save Fig. 3.7B:
+
+ggsave("Fig_3_7B.pdf",
+       plot = p)
 ```
 
 Families with at least one TF with max number of DBDs more than one in at least one isoform:
@@ -691,10 +715,10 @@ TFs with maximum 3 DBDs: `r n_dbd_table %>% filter(max_n_dbds == 3) %>% nrow()` 
 
 TFs with maximum >3 DBDs: `r n_dbd_table %>% filter(max_n_dbds > 3) %>% nrow()` (`r (n_dbd_table %>% filter(max_n_dbds > 3) %>% nrow()) / (n_dbd_table %>% nrow()) * 100`%). The vast majority (`r (n_dbd_table %>% filter(max_n_dbds > 3) %>% filter(DBD == "C2H2 ZF") %>% nrow()) / (n_dbd_table %>% filter(max_n_dbds > 3) %>% nrow()) * 100`%) of these TFs come from the C2H2 ZF family.
 
-A barplot with overall TF frequencies:
+A barplot with overall TF frequencies (Fig. 3.7A):
 
 ```{r, include=T}
-ggplot(data = data.frame("Number_of_DBDs" = c("1", "2", "3", ">3"),
+p = ggplot(data = data.frame("Number_of_DBDs" = c("1", "2", "3", ">3"),
                          "Frequency" = c((n_dbd_table %>% 
                                             filter(max_n_dbds == 1) %>% 
                                             nrow()) / 
@@ -724,6 +748,13 @@ ggplot(data = data.frame("Number_of_DBDs" = c("1", "2", "3", ">3"),
   geom_col(aes(fill = Number_of_DBDs)) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+
+p
+
+# Save Fig. 3.7A:
+
+ggsave("Fig_3_7A.pdf",
+       plot = p)
 ```
 
 The majority (`r n_dbd_table %>% filter(max_n_dbds == 1) %>% pull(DBD) %>% unique() %>% length()` out of `r n_dbd_table %>% pull(DBD) %>% unique() %>% length()`, or `r (n_dbd_table %>% filter(max_n_dbds == 1) %>% pull(DBD) %>% unique() %>% length()) / (n_dbd_table %>% pull(DBD) %>% unique() %>% length()) * 100`%) of TF families have just one DBD match, and multiple DBD matches are mainly present in combined families (`r (n_dbd_table %>% filter(max_n_dbds > 1) %>% filter(stringr::str_detect(DBD, ";")) %>% nrow()) / (n_dbd_table %>% filter(max_n_dbds > 1) %>% nrow()) * 100`% of TFs with the maximum number of DBDs more than 1) and in the C2H2 ZF family (`r (n_dbd_table %>% filter(max_n_dbds > 1) %>% filter(DBD == "C2H2 ZF") %>% nrow()) / (n_dbd_table %>% filter(max_n_dbds > 1) %>% nrow()) * 100`% of such TFs).
@@ -958,7 +989,7 @@ dbd_changing_num_table = tf_coding_transcripts_final_ens99_with_fam_names_correc
   distinct()
 ```
 
-Plot the frequencies:
+Plot the frequencies (Fig. 3.9B):
 
 ```{r, include=T, fig.width=15, fig.height=5}
 count_genes = function(domain_type) {
@@ -1019,7 +1050,7 @@ tf.families.ordered = dbd.changing.num.frequencies$family.num
 
 dbd.changing.num.frequencies$family.num = factor(dbd.changing.num.frequencies$family.num, levels = dbd.changing.num.frequencies$family.num)
 
-ggplot(data = data.frame("Category" = c(rep("Constant DBD combination", tf.family.count),
+p = ggplot(data = data.frame("Category" = c(rep("Constant DBD combination", tf.family.count),
                                         rep("Changing DBD combination", tf.family.count)),
                          "Frequency" = c(dbd.changing.num.frequencies$const.frequency,
                                          dbd.changing.num.frequencies$changing.frequency),
@@ -1031,6 +1062,13 @@ ggplot(data = data.frame("Category" = c(rep("Constant DBD combination", tf.famil
   scale_y_continuous(limits = c(0, 1), breaks = pretty_breaks(n = 11)) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+
+p
+
+# Save Fig. 3.9B:
+
+ggsave("Fig_3_9B.pdf",
+       plot = p)
 ```
 
 ```{r}
@@ -1041,10 +1079,10 @@ kable(dbd.changing.num.frequencies) %>%
 
 Here, we selected TFs that have more than one isoform and more than one DBD in at least one isoform (N = `r dbd_changing_num_table %>% nrow()`). The number of such TFs in each family is given in parentheses. In `r (dbd_changing_num_table %>% filter(is_dbd_combination_changing) %>% nrow()) / (dbd_changing_num_table %>% nrow()) * 100`% of these TFs, the combination of DBDs changes between isoforms. The number of TF families in this plot is `r dbd_changing_num_table %>% pull(DBD) %>% unique() %>% length()`.
 
-A plot for overall TF stats:
+A plot for overall TF stats (Fig. 3.9A):
 
 ```{r, include=T}
-ggplot(data = data.frame("Category" = c("Constant DBD combination",
+p = ggplot(data = data.frame("Category" = c("Constant DBD combination",
                                         "Changing DBD combination"),
                          "Frequency" = c((dbd_changing_num_table %>% 
                                             filter(!is_dbd_combination_changing) %>% 
@@ -1064,6 +1102,13 @@ ggplot(data = data.frame("Category" = c("Constant DBD combination",
   scale_y_continuous(limits = c(0, 1), breaks = pretty_breaks(n = 11)) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+
+p
+
+# Save Fig. 3.9A:
+
+ggsave("Fig_3_9A.pdf",
+       plot = p)
 ```
 
 In the category of TFs with constant DBD combinations, production of alternative isoforms serves as a switch between the TF and the non-TF states by including or excluding whole DBD combinations. Hence, these combinations are probably encoded by a single exon in each TF of this category.
@@ -1109,7 +1154,7 @@ n_vardbd_table = dbd_seq_table %>%
   distinct()
 ```
 
-Plot frequencies of different counts of DBD variants:
+Plot frequencies of different counts of DBD variants (Fig. 3.8B):
 
 ```{r, echo=F, fig.width=15, fig.height=5}
 count_genes = function(domain_type) {
@@ -1192,7 +1237,7 @@ vardbd.n.frequencies.sorted = c(vardbd.1.frequencies.sorted,
                                 vardbd.3.frequencies.sorted,
                                 vardbd.many.frequencies.sorted)
 
-ggplot(data = data.frame("Number_of_DBD_variants" = c(rep("1", tf.family.count),
+p = ggplot(data = data.frame("Number_of_DBD_variants" = c(rep("1", tf.family.count),
                                                       rep("2", tf.family.count),
                                                       rep("3", tf.family.count),
                                                       rep(">3", tf.family.count)),
@@ -1207,6 +1252,13 @@ ggplot(data = data.frame("Number_of_DBD_variants" = c(rep("1", tf.family.count),
   scale_y_continuous(limits = c(0, 1), breaks = pretty_breaks(n = 11)) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+
+p
+
+# Save Fig. 3.8B:
+
+ggsave("Fig_3_8B.pdf",
+       plot = p)
 ```
 
 The number of TF families in the plot is `r n_vardbd_table %>% pull(DBD) %>% unique() %>% length()` and the number of TFs in the plot is `r n_vardbd_table %>% pull(ensembl_gene_id) %>% unique() %>% length()`, which is correct (see stats above for the number of TFs with maximum 1 DBD).
@@ -1219,10 +1271,10 @@ The number of TFs with 3 DBD variants `r n_vardbd_table %>% filter(dbd_var_count
 
 The number of TFs with >3 DBD variants `r n_vardbd_table %>% filter(dbd_var_count > 3) %>% nrow()` (`r (n_vardbd_table %>% filter(dbd_var_count > 3) %>% nrow()) / (n_vardbd_table %>% nrow()) * 100`%).
 
-A plot for overall TF stats:
+A plot for overall TF stats (Fig. 3.8A):
 
 ```{r, include=T}
-ggplot(data = data.frame("Number_of_DBD_variants" = c("1", "2", "3", ">3"),
+p = ggplot(data = data.frame("Number_of_DBD_variants" = c("1", "2", "3", ">3"),
                          "Frequency" = c((n_vardbd_table %>% 
                                             filter(dbd_var_count == 1) %>% 
                                             nrow()) / 
@@ -1253,4 +1305,11 @@ ggplot(data = data.frame("Number_of_DBD_variants" = c("1", "2", "3", ">3"),
   scale_y_continuous(limits = c(0, 1), breaks = pretty_breaks(n = 11)) +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5))
+
+p
+
+# Save Fig. 3.8A:
+
+ggsave("Fig_3_8A.pdf",
+       plot = p)
 ```
