@@ -79,7 +79,7 @@ Alternative splicing can potentially remove all DBDs from a TF. So let us find h
 Create a table showing which TFs have at least one isoform without DBDs:
 
 ```{r, include=T}
-tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl = readRDS(tf_coding_transcripts_final_ens99_with_fam_names_corrected_with_tsl_name)
+tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl = readRDS(tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl_name)
 
 dbd_yes_no_gene_table = tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl %>%
   filter(DBD != "Unknown") %>%
