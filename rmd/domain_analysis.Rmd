@@ -58,6 +58,7 @@ args = commandArgs()
 
 tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl_name = args[9]
 ens99_pep_name = args[10]
+canonical_dbd_iprs_name = args[11]
 
 #humantfs_name = args[9]
 #interpro_entries_name = args[10]

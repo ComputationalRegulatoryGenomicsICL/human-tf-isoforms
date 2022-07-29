@@ -31,6 +31,7 @@ process SELECT_DOMAINS_AND_TF_ISOFORMS {
     path "*.rds",  emit: rds
     path "*.html", emit: knitted_html
     path "tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl.rds", emit: tf_coding_transcripts_final_ens99_with_fam_names_corrected_with_tsl
+    path "canonical_dbd_iprs.rds", emit: canonical_dbd_iprs
 
     script:
     """

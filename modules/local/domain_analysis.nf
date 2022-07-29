@@ -19,6 +19,7 @@ process DOMAIN_ANALYSIS {
     path rmd
     path tf_coding_transcripts_final_ens99_with_fam_names_corrected_with_tsl
     path ens99_pep
+    path canonical_dbd_iprs
 
     output:
     path "*.tsv" , emit: tables, optional: true
@@ -30,6 +31,7 @@ process DOMAIN_ANALYSIS {
     render_rmd.R \\
         ${rmd} \\
         ${tf_coding_transcripts_final_ens99_with_fam_names_corrected_with_tsl} \\
-        ${ens99_pep}
+        ${ens99_pep} \\
+        ${canonical_dbd_iprs}
     """
 }

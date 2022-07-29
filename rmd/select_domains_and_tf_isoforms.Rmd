@@ -1761,3 +1761,10 @@ scroll_box(width = "100%")
 No A domain or TAD either. So, they are probably not represented in InterPro.
 
 Overall, known TF isoforms retaining or lacking certain domains are present in the final table.
+
+Write down tables for downstream modules:
+
+```{r, include = T}
+saveRDS(canonical_dbd_iprs,
+        file = "canonical_dbd_iprs.rds")
+```
