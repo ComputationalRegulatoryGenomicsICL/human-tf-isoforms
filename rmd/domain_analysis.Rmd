@@ -735,6 +735,8 @@ In TFs with maximum one DBD, alternative splicing can work as a switch between t
 Plot the frequencies of isoforms with 1, 2, 3 or more than 3 DBDs:
 
 ```{r, include=T}
+canonical_dbd_iprs = readRDS(canonical_dbd_iprs_name)
+
 n_dbd_table_isof = tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl %>%
   filter(!DBD %in% c("Unknown", "Excluded")) %>%
   filter(ipr_accession %in% canonical_dbd_iprs) %>%
