@@ -27,7 +27,7 @@ library(kableExtra)
 #library(data.tree)
 #library(XLConnect)
 #library(msa)
-#library(R.utils)
+library(R.utils)
 ```
 
 # Print package versions
@@ -46,7 +46,7 @@ packageVersion("kableExtra")
 #packageVersion("data.tree")
 #packageVersion("XLConnect")
 #packageVersion("msa")
-#packageVersion("R.utils")
+packageVersion("R.utils")
 ```
 
 # Read input
