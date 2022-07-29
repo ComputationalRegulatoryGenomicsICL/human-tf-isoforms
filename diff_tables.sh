@@ -68,3 +68,21 @@ paste -d$'\t' \
 paste -d$'\t' \
     <(diff ${NEWRESPATH}/select_domains_and_tf_isoforms/tables/tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl.tsv ${OLDRESPATH}/data/results/domain_analysis/tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl.tsv | wc -l) \
     <(echo "tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl.tsv")
+
+echo "./results/output_per_module/domain_analysis/tables:"
+
+paste -d$'\t' \
+    <(diff ${NEWRESPATH}/domain_analysis/tables/base_dbd_expression_analysis_table.tsv ${OLDRESPATH}/data/results/base_dbd_expression_analysis_table.tsv | wc -l) \
+    <(echo "base_dbd_expression_analysis_table.tsv")
+
+paste -d$'\t' \
+    <(diff ${NEWRESPATH}/domain_analysis/tables/Homo_sapiens.GRCh38.pep.all.99.tsv ${OLDRESPATH}/data/ensembl99/Homo_sapiens.GRCh38.pep.all.99.tsv | wc -l) \
+    <(echo "Homo_sapiens.GRCh38.pep.all.99.tsv")
+
+paste -d$'\t' \
+    <(diff ${NEWRESPATH}/domain_analysis/tables/isoforms_no_dbd_list.tsv ${OLDRESPATH}/data/results/isoforms_no_dbd_list.tsv | wc -l) \
+    <(echo "isoforms_no_dbd_list.tsv")
+
+paste -d$'\t' \
+    <(diff ${NEWRESPATH}/domain_analysis/tables/isoforms_no_domains_list.tsv ${OLDRESPATH}/data/results/isoforms_no_domains_list.tsv | wc -l) \
+    <(echo "iisoforms_no_domains_list.tsv")
