@@ -17,16 +17,17 @@ output:
 
 ```{r, include=T}
 stringsAsFactors = F
+
 library(tidyverse)
-library(scales)
+#library(scales)
 library(kableExtra)
-library(biomaRt)
-library(seqinr)
-library(yaml)
-library(data.tree)
-library(XLConnect)
-library(msa)
-library(R.utils)
+#library(biomaRt)
+#library(seqinr)
+#library(yaml)
+#library(data.tree)
+#library(XLConnect)
+#library(msa)
+#library(R.utils)
 ```
 
 # Print package versions
@@ -35,15 +36,15 @@ Print versions of the loaded libraries:
 
 ```{r, include=T}
 packageVersion("tidyverse")
-packageVersion("scales")
+#packageVersion("scales")
 packageVersion("kableExtra")
-packageVersion("biomaRt")
-packageVersion("seqinr")
-packageVersion("yaml")
-packageVersion("data.tree")
-packageVersion("XLConnect")
-packageVersion("msa")
-packageVersion("R.utils")
+#packageVersion("biomaRt")
+#packageVersion("seqinr")
+#packageVersion("yaml")
+#packageVersion("data.tree")
+#packageVersion("XLConnect")
+#packageVersion("msa")
+#packageVersion("R.utils")
 ```
 
 # Read input
@@ -53,17 +54,19 @@ Read args:
 ```{r, include=T}
 args = commandArgs()
 
-humantfs_name = args[9]
-interpro_entries_name = args[10]
-ensembl99_all_name = args[11]
-gene_biotype_table_name = args[12]
-protein_fasta_tfs_name = args[13]
-ipr_hierarchy_yaml_name = args[14]
-draft_classification_table_name = args[15]
-domain_classification_wb_name = args[16]
-ensg_enst_tsl_name = args[17]
-ens99_pep_name = args[18]
-nondbd.annot_name = args[19]
+tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl_name = args[9]
+nondbd.annot_name = args[10]
+
+#humantfs_name = args[9]
+#interpro_entries_name = args[10]
+#ensembl99_all_name = args[11]
+#gene_biotype_table_name = args[12]
+#protein_fasta_tfs_name = args[13]
+#ipr_hierarchy_yaml_name = args[14]
+#draft_classification_table_name = args[15]
+#domain_classification_wb_name = args[16]
+#ensg_enst_tsl_name = args[17]
+#ens99_pep_name = args[18]
 ```
 
 # Annotated and summarise non-DBDs
@@ -71,6 +74,8 @@ nondbd.annot_name = args[19]
 Generate the raw table of non-DBDs:
 
 ```{r, include=T}
+tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl = readRDS(tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl_name)
+
 tf.matches = tf_coding_transcripts_final_ens99_with_fam_names_corrected.with_tsl
 
 nondbd.annot.raw = tf.matches %>%
@@ -87,7 +92,7 @@ write.table(nondbd.annot.raw,
             row.names = F)
 ```
 
-Load the table of manually curated non-DBDs. This table was obtained by the manual curation of the table `Other_domains_manually_curated_raw.tsv`:
+Load the table of manually curated non-DBDs. This table was obtained by the manual curation of the table `Other_domains_manually_curated_raw.tsv` generated above:
 
 ```{r, include=T}
 nondbd.annot = read.delim(nondbd.annot_name)
@@ -100,7 +105,9 @@ nondbd.annot.summary = nondbd.annot %>%
   count(Molecular_function) %>%
   arrange(desc(n))
 
-nondbd.annot.summary
+kable(nondbd.annot.summary) %>%
+  kable_styling(bootstrap_options = c("striped", "hover")) %>%
+  scroll_box(width = "100%")  
 ```
 
 Write down the overall stats table:

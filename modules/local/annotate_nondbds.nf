@@ -18,15 +18,7 @@ process ANNOTATE_NONDBDS {
     input:
     path rmd
     path humantfs 
-    path interpro_entries
-    path ensembl99_all
-    path gene_biotype_table
-    path protein_fasta_tfs
-    path ipr_hierarchy_yaml
-    path draft_classification_table
-    path domain_classification_wb
-    path ensg_enst_tsl
-    path ens99_pep
+    path tf_coding_transcripts_final_ens99_with_fam_names_corrected_with_tsl
     path nondbd_annot
 
     output:
@@ -38,16 +30,7 @@ process ANNOTATE_NONDBDS {
     """
     render_rmd.R \\
         ${rmd} \\
-        ${humantfs} \\
-        ${interpro_entries} \\
-        ${ensembl99_all} \\
-        ${gene_biotype_table} \\
-        ${protein_fasta_tfs} \\
-        ${ipr_hierarchy_yaml} \\
-        ${draft_classification_table} \\
-        ${domain_classification_wb} \\
-        ${ensg_enst_tsl} \\
-        ${ens99_pep} \\
+        ${tf_coding_transcripts_final_ens99_with_fam_names_corrected_with_tsl} \\
         ${nondbd_annot}
     """
 }
