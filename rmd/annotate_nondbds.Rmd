@@ -1,5 +1,5 @@
 ---
-title: "Analysis of domains in alternative TF isoforms"
+title: "Analysis of DBDs in alternative TF isoforms"
 author: "Sviatoslav Sidorov"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
