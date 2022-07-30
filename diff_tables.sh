@@ -92,7 +92,3 @@ echo "./results/output_per_module/annotate_nondbds/tables:"
 paste -d$'\t' \
     <(diff ${NEWRESPATH}/annotate_nondbds/tables/Other_domains_manually_curated_raw.tsv ${OLDRESPATH}/analysis/classify_domains/output/classify_domains/Other_domains_manually_curated_raw.csv | wc -l) \
     <(echo "Other_domains_manually_curated_raw.tsv")
-
-paste -d$'\t' \
-    <(diff ${NEWRESPATH}/annotate_nondbds/tables/Other_domains_manually_curated_summary_mol_function_dbdminus.tsv ${OLDRESPATH}/analysis/classify_domains/output/classify_domains/Other_domains_manually_curated_summary_mol_function_dbdminus_filled.tsv | wc -l) \
-    <(echo "Other_domains_manually_curated_summary_mol_function_dbdminus.tsv")
