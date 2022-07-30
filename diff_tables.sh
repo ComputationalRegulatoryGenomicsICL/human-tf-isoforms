@@ -85,4 +85,14 @@ paste -d$'\t' \
 
 paste -d$'\t' \
     <(diff ${NEWRESPATH}/domain_analysis/tables/isoforms_no_domains_list.tsv ${OLDRESPATH}/data/results/isoforms_no_domains_list.tsv | wc -l) \
-    <(echo "iisoforms_no_domains_list.tsv")
+    <(echo "isoforms_no_domains_list.tsv")
+
+echo "./results/output_per_module/annotate_nondbds/tables:"
+
+paste -d$'\t' \
+    <(diff ${NEWRESPATH}/annotate_nondbds/tables/Other_domains_manually_curated_raw.tsv ${OLDRESPATH}/analysis/classify_domains/output/classify_domains/Other_domains_manually_curated_raw.csv | wc -l) \
+    <(echo "Other_domains_manually_curated_raw.tsv")
+
+paste -d$'\t' \
+    <(diff ${NEWRESPATH}/annotate_nondbds/tables/Other_domains_manually_curated_summary_mol_function_dbdminus.tsv ${OLDRESPATH}/analysis/classify_domains/output/classify_domains/Other_domains_manually_curated_summary_mol_function_dbdminus_filled.tsv | wc -l) \
+    <(echo "Other_domains_manually_curated_summary_mol_function_dbdminus.tsv")
