@@ -1,4 +1,4 @@
-process DOMAIN_ANALYSIS {
+process DBD_ANALYSIS {
     //label 'process_medium'
     label 'process_low'
     stageInMode 'copy'

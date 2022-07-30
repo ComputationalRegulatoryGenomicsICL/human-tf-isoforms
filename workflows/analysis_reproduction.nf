@@ -1,14 +1,14 @@
 include { SUMMARISE_TFS_AND_DOMAINS } from '../modules/local/summarise_tfs_and_domains.nf'
 include { PREPROCESS_DOMAIN_MATCHES } from '../modules/local/preprocess_domain_matches.nf'
 include { SELECT_DOMAINS_AND_TF_ISOFORMS } from '../modules/local/select_domains_and_tf_isoforms.nf'
-include { DOMAIN_ANALYSIS } from '../modules/local/domain_analysis.nf'
+include { DBD_ANALYSIS } from '../modules/local/dbd_analysis.nf'
 include { ANNOTATE_NONDBDS } from '../modules/local/annotate_nondbds.nf'
 
 // R Markdown files
 rmd_summarise_tfs_and_domains = file( "./rmd/summarise_tfs_and_domains.Rmd" )
 rmd_preprocess_domain_matches = file( "./rmd/preprocess_domain_matches.Rmd" )
 rmd_select_domains_and_tf_isoforms = file( "./rmd/select_domains_and_tf_isoforms.Rmd" )
-rmd_domain_analysis = file( "./rmd/domain_analysis.Rmd" )
+rmd_dbd_analysis = file( "./rmd/dbd_analysis.Rmd" )
 rmd_annotate_nondbds = file( "./rmd/annotate_nondbds.Rmd" )
 
 // Input data
@@ -63,7 +63,7 @@ workflow NF_ANALYSIS_REPRODUCTION {
         humantfs
     )
 
-    DOMAIN_ANALYSIS ( 
+    DBD_ANALYSIS ( 
         rmd_domain_analysis,
         SELECT_DOMAINS_AND_TF_ISOFORMS.out.tf_coding_transcripts_final_ens99_with_fam_names_corrected_with_tsl,
         ens99_pep,
