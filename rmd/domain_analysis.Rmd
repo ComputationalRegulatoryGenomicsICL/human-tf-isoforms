@@ -777,6 +777,22 @@ n_dbd_table_isof = tf_coding_transcripts_final_ens99_with_fam_names_corrected.wi
   arrange(DBD, humantfs_gene_name, ensembl_transcript_id)
 ```
 
+Debug:
+
+```{r, include=T}
+write.table(canonical_dbd_iprs,
+            file = "canonical_dbd_iprs_debug.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
+
+write.table(canonical_dbd_iprs_filtered,
+            file = "canonical_dbd_iprs_filtered_debug.tsv",
+            quote = F,
+            sep = "\t",
+            row.names = F)
+```
+
 Plot the frequencies:
 
 ```{r, include=T, fig.width=15, fig.height=5}
