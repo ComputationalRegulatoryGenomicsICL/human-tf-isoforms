@@ -17,7 +17,6 @@ process ANNOTATE_NONDBDS {
 
     input:
     path rmd
-    path humantfs 
     path tf_coding_transcripts_final_ens99_with_fam_names_corrected_with_tsl
     path nondbd_annot
 
