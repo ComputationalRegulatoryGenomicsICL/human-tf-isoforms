@@ -1,5 +1,5 @@
 ---
-title: "Annotate non-DBDs in TF isoforms"
+title: "Annotation of non-DBDs in alternative TF isoforms"
 author: "Sviatoslav Sidorov"
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output:
