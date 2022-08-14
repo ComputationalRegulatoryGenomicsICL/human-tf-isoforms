@@ -1626,7 +1626,7 @@ p = ipr.matches.filtering.comparison %>%
     theme_classic() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-ggsave(filename = "data/results/ipr_matches_filtering_comparison_barplot.pdf",
+ggsave(filename = "ipr_matches_filtering_comparison_barplot.pdf",
        plot = p,
        width = 5,
        height = 3)
@@ -2025,6 +2025,100 @@ data.frame(Database = c("Pfam", "SMART", "ProSiteProfiles", "CDD", "SUPERFAMILY"
 ```
 
 So the numbers of signatures from PRINTS and Gene3D decreased, which is expected. The number of signatures from PRINTS lowered most dramatically. The total number of signatures is `r nrow(ips_domains_ipr_ens99_int_specific_retained5_prints.ok)`.
+
+## Compare the number of signature matches before and after filtering
+
+```{r, include}
+signature.matches.before.df = data.frame(Database = c("Pfam", "SMART", "ProSiteProfiles", "CDD", "SUPERFAMILY", "Gene3D", "PRINTS", "ProSitePatterns", "PIRSF", "PANTHER"), 
+           Number_of_domains = c(ips_domains_ipr_ens99_int_specific_retained5 %>%
+                                   filter(db == "Pfam") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5 %>%
+                                   filter(db == "SMART") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5 %>%
+                                   filter(db == "ProSiteProfiles") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5 %>%
+                                   filter(db == "CDD") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5 %>%
+                                   filter(db == "SUPERFAMILY") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5 %>%
+                                   filter(db == "Gene3D") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5 %>%
+                                   filter(db == "PRINTS") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5 %>%
+                                   filter(db == "ProSitePatterns") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5 %>%
+                                   filter(db == "PIRSF") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5 %>%
+                                   filter(db == "PANTHER") %>%
+                                   nrow())) %>%
+  mutate(Database = factor(Database, levels = c("Pfam", "SMART", "ProSiteProfiles", "CDD", "SUPERFAMILY", "Gene3D", "PRINTS", "ProSitePatterns", "PIRSF", "PANTHER"))) %>%
+  mutate(df_state = "before")
+
+signature.matches.after.df = data.frame(Database = c("Pfam", "SMART", "ProSiteProfiles", "CDD", "SUPERFAMILY", "Gene3D", "PRINTS", "ProSitePatterns", "PIRSF", "PANTHER"),
+           Number_of_domains = c(ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
+                                   filter(source_db == "Pfam") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
+                                   filter(source_db == "SMART") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
+                                   filter(source_db == "ProSiteProfiles") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
+                                   filter(source_db == "CDD") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
+                                   filter(source_db == "SUPERFAMILY") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
+                                   filter(source_db == "Gene3D") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
+                                   filter(source_db == "PRINTS") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
+                                   filter(source_db == "ProSitePatterns") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
+                                   filter(source_db == "PIRSF") %>%
+                                   nrow(),
+                                 ips_domains_ipr_ens99_int_specific_retained5_prints.ok %>%
+                                   filter(source_db == "PANTHER") %>%
+                                   nrow())) %>%
+  mutate(Database = factor(Database, levels = c("Pfam", "SMART", "ProSiteProfiles", "CDD", "SUPERFAMILY", "Gene3D", "PRINTS", "ProSitePatterns", "PIRSF", "PANTHER"))) %>%
+  mutate(df_state = "after") %>%
+  mutate(Number_of_domains = ifelse(Number_of_domains == 0, 1, Number_of_domains))
+
+p = signature.matches.before.df %>%
+  bind_rows(signature.matches.after.df) %>%
+  mutate(df_state = factor(df_state, levels = c("before", "after"))) %>%
+  ggplot(aes(x = Database, 
+             y = log10(Number_of_domains),
+             fill = df_state)) +
+    geom_col(position = "dodge") +
+    geom_text(aes(x = Database, label = Number_of_domains),
+              position = position_dodge(width = 1),
+              vjust = -1) +
+    theme_classic() +
+    theme(legend.position = "none") +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 0.5))
+
+ggsave(filename = "signature_matches_filtering_comparison_barplot.pdf",
+       plot = p,
+       width = 6,
+       height = 3)
+
+p
+```
 
 ## Check general matches not overlapping with related specific ones
 
@@ -2686,7 +2780,7 @@ The total number of DBD types is `r ips_domains_ipr_ens99_final_strat %>% filter
 
 The plot shows `r dbd_other_domain_numbers %>% filter(Category == "DBD") %>% pull(Number) %>% sum()` DBD types and `r dbd_other_domain_numbers %>% filter(Category == "Other") %>% pull(Number) %>% sum()` other domain types. The difference with the stats above is caused by the aforementioned fact that different instances of the same domain can be matched by profiles from different databases, and so the same domain can be counted multiple times in the plot above.
 
-A simple bar-chart representing the numbers of different types of specific domains:
+Numbers of different types of specific domains:
 
 ```{r, include=T, fig.width=4, fig.height=6}
 ggplot(data = data.frame("Category" = c("DBD", "Other", "Unknown", "Unclear", "Non-DBD"),
@@ -2730,7 +2824,54 @@ ggplot(data = data.frame("Category" = c("DBD", "Other", "Unknown", "Unclear", "N
   theme(legend.position = "none")
 ```
 
+Numbers of different types of all domains:
+
+```{r, include=T, fig.width=4, fig.height=6}
+p = ggplot(data = data.frame("Category" = c("DBD", "Other", "Unknown", "Unclear", "Non-DBD"),
+                         "Count" = c(ips_domains_ipr_ens99_final_strat %>%
+                                       filter(domain_type == "DBD") %>%
+                                       pull(ipr_accession) %>%
+                                       unique() %>%
+                                       length(),
+                                     ips_domains_ipr_ens99_final_strat %>%
+                                       filter(domain_type == "Other") %>%
+                                       pull(ipr_accession) %>%
+                                       unique() %>%
+                                       length(),
+                                     ips_domains_ipr_ens99_final_strat %>%
+                                       filter(domain_type == "Unknown") %>%
+                                       pull(ipr_accession) %>%
+                                       unique() %>%
+                                       length(),
+                                     ips_domains_ipr_ens99_final_strat %>%
+                                       filter(domain_type == "Unclear") %>%
+                                       pull(ipr_accession) %>%
+                                       unique() %>%
+                                       length(),
+                                     ips_domains_ipr_ens99_final_strat %>%
+                                       filter(domain_type == "Non-DBD") %>%
+                                       pull(ipr_accession) %>%
+                                       unique() %>%
+                                       length())),
+       aes(x = Category, y = Count, group = Category)) +
+  geom_col(aes(fill = Category), position = "dodge") +
+  geom_text(aes(x = Category, label = Count),
+            position = position_dodge(width = 1),
+            vjust = -1) +
+  theme_classic() +
+  theme(legend.position = "none")
+
+ggsave(filename = "ipr_prelim_classification_barplot.pdf",
+       plot = p,
+       width = 3,
+       height = 3)
+
+p
+```
+
 Overall, there are `r ips_domains_ipr_ens99_final_strat %>% filter(domain_type == "DBD") %>% filter(ipr_status == "specific") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` specific DBD-related matches (a match can have multiple domains of the same type in it; for example this is the case with C2H2 zinc fingers) and `r ips_domains_ipr_ens99_final_strat %>% filter(domain_type == "Other") %>% filter(ipr_status == "specific") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` specific other matches.
+
+The number of all DBD InterPro entry matches is `r ips_domains_ipr_ens99_final_strat %>% filter(domain_type == "DBD") %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()`.
 
 The number of specific DBD-related InterPro entries (`r ips_domains_ipr_ens99_final_strat %>% filter(ipr_status == "specific") %>% filter(domain_type == "DBD") %>% pull(ipr_accession) %>% unique() %>% length()`) is way greater than the number of general TF families from HumanTFs (`r ips_domains_ipr_ens99_final_strat %>% left_join(tfs, by = c("ensembl_gene_id" = "Ensembl.ID")) %>% dplyr::select(-c(names(tfs)[(names(tfs) != "DBD") & (names(tfs) != "Ensembl.ID")])) %>% pull(DBD) %>% unique() %>% length()`). This is explained by the fact that there are some noncanonical DBDs, not used to form families, and also different subtypes of the same DBD.
 
