@@ -1591,6 +1591,49 @@ No overlaps of specific with specific or general with general Family matches.
 
 Overall, with this filtering stage we went down from  `r ips_domains_ipr_ens99_int_specific_retained %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` to `r ips_domains_ipr_ens99_int_specific_retained5 %>% group_by(ensembl_transcript_id) %>% dplyr::select(ipr_accession) %>% distinct() %>% ungroup() %>% pull(ipr_accession) %>% length()` specific InterPro entry matches, from `r nrow(ips_domains_ipr_ens99_int)` signatures to `r nrow(ips_domains_ipr_ens99_int_specific_retained5 %>% filter(ipr_status == "specific"))` signatures under specific matches, from `r ips_domains_ipr_ens99_iprs %>% length()` unique InterPro entries to `r ips_domains_ipr_ens99_int_specific_retained5_iprs %>% length()` unique specific entries, and from `r length(ips_domains_ipr_ens99_iprs[ips_domains_ipr_ens99_iprs %in% humantfs_dbd_ids])` entries from HumanTFs to `r length(ips_domains_ipr_ens99_int_specific_retained5_iprs[ips_domains_ipr_ens99_int_specific_retained5_iprs %in% humantfs_dbd_ids])` specific ones. Hence, `r length(ips_domains_ipr_ens99_iprs[ips_domains_ipr_ens99_iprs %in% humantfs_dbd_ids]) - length(ips_domains_ipr_ens99_int_specific_retained5_iprs[ips_domains_ipr_ens99_int_specific_retained5_iprs %in% humantfs_dbd_ids])` InterPro entries from HumanTFs were removed or became general after the filtering procedure above. The vast majority of the retained specific InterPro entries are of the Domain type, which is good.
 
+## Compare numbers of all InterPro entry matches before and after filtering
+
+```{r, include=T}
+ipr.matches.before.filtering = ips_domains_ipr_ens99_int_specific_retained %>%
+  group_by(ensembl_transcript_id) %>%
+  dplyr::select(ipr_accession, ENTRY_TYPE) %>%
+  distinct() %>%
+  ungroup() %>%
+  count(ENTRY_TYPE) %>%
+  mutate(df_state = "before")
+
+ipr.matches.after.filtering = ips_domains_ipr_ens99_int_specific_retained5 %>%
+  group_by(ensembl_transcript_id) %>%
+  dplyr::select(ipr_accession, ENTRY_TYPE) %>%
+  distinct() %>%
+  ungroup() %>%
+  count(ENTRY_TYPE) %>%
+  mutate(df_state = "after")
+
+ipr.matches.filtering.comparison = ipr.matches.before.filtering %>%
+  bind_rows(ipr.matches.after.filtering) %>%
+  bind_rows(data.frame(ENTRY_TYPE = c("Active_site", "Domain_Family"),
+                       n = c(1, 1),
+                       df_state = c("after", "before"))) %>%
+  mutate(df_state = factor(df_state, levels = c("before", "after")))
+
+p = ipr.matches.filtering.comparison %>%
+  ggplot(aes(x = ENTRY_TYPE,
+             y = log10(n),
+             fill = df_state)) +
+    geom_col(width = .5, 
+             position = "dodge") +
+    theme_classic() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+ggsave(filename = "data/results/ipr_matches_filtering_comparison_barplot.pdf",
+       plot = p,
+       width = 5,
+       height = 3)
+
+p
+```
+
 # Select one signature per match
 
 ## Initial selection
